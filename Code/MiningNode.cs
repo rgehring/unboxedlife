@@ -49,7 +49,7 @@ public sealed class MiningNode : Interactable
 
 		_depleted = true;
 
-		// Reward
+		// Reward for mining the node
 		wallet.AddStone( StonePerNode );
 
 		Log.Info( $"MINING: {GameObject.Name} depleted. Respawn in {RespawnSeconds}s" );
