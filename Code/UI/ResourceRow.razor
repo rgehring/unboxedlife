@@ -1,0 +1,12 @@
+@using Sandbox.UI
+@inherits Panel
+
+<root class="row">
+    <div class="label">@Label</div>
+    <div class="value">@Value</div>
+</root>
+
+@code {
+    public string Label { get; set; }
+    public string Value { get; set; }
+}

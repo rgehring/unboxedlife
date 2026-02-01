@@ -1,6 +1,3 @@
-using Sandbox;
-using System;
-
 namespace UnboxedLife;
 
 public sealed class HealthComponent : Component
@@ -8,7 +5,7 @@ public sealed class HealthComponent : Component
 	[Property] public float MaxHealth { get; set; } = 100f;
 
 	// Networked so all clients can read it, but only host should change it.
-	[Sync] public float Health { get; private set; }
+	[Sync( SyncFlags.FromHost )] public float Health { get; private set; }
 
 	[Property] public bool AutoRespawn { get; set; } = true;
 	[Property] public float RespawnDelaySeconds { get; set; } = 5f;
@@ -16,7 +13,9 @@ public sealed class HealthComponent : Component
 	protected override void OnStart()
 	{
 		if ( Networking.IsHost )
+		{
 			Health = MaxHealth;
+		}
 	}
 
 	public void ResetHealth()
@@ -40,21 +39,18 @@ public sealed class HealthComponent : Component
 	{
 		if ( !Networking.IsHost ) return;
 
-		// Minimal “death”: disable the whole player object for everyone.
-		GameObject.Enabled = false;
+		var pawn = Components.Get<PlayerLink>()?.Player ?? GameObject; // state -> pawn
+		pawn.Enabled = false;
 
-		if ( !AutoRespawn )
-			return;
+		if ( !AutoRespawn ) return;
 
 		await GameTask.DelaySeconds( RespawnDelaySeconds );
 
-		// Respawn: re-enable and reset.
-		// Update: Now includes resetting needs.
-		GameObject.Enabled = true;
 		Health = MaxHealth;
 		Components.Get<NeedsComponent>()?.ResetNeeds();
 
-		// Move to a spawn point if NetworkHelper has them; for now just lift up.
-		GameObject.WorldPosition += Vector3.Up * 64f;
+		pawn.Enabled = true;
+		pawn.WorldPosition += Vector3.Up * 64f;
 	}
+
 }

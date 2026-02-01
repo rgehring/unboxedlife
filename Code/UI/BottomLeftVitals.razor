@@ -1,0 +1,73 @@
+@using System.Linq
+@using System;
+@using Sandbox
+@using Sandbox.UI
+@using UnboxedLife
+@inherits Panel
+
+<root class="vitals">
+    <div class="row">
+        <span>HP</span>
+        <div class="bar"><div class="fill" style=$"width:{HpPct}%" /></div>
+        <span>@($"{Hp:0}/{HpMax:0}")</span>
+    </div>
+
+    <div class="row">
+        <span>H</span>
+        <div class="bar"><div class="fill" style=$"width:{HungerPct}%" /></div>
+        <span>@($"{Hunger:0}/{HungerMax:0}")</span>
+    </div>
+
+    <div class="row">
+        <span>T</span>
+        <div class="bar"><div class="fill" style=$"width:{ThirstPct}%" /></div>
+        <span>@($"{Thirst:0}/{ThirstMax:0}")</span>
+    </div>
+</root>
+
+@code
+{
+    GameObject _state;
+    HealthComponent _health;
+    NeedsComponent _needs;
+
+    float Hp => _health?.Health ?? 0f;
+    float HpMax => _health?.MaxHealth ?? 1f;
+    float Hunger => _needs?.HungerReadout ?? 0f;
+    float HungerMax => _needs?.MaxHunger ?? 1f;
+    float Thirst => _needs?.ThirstReadout ?? 0f;
+    float ThirstMax => _needs?.MaxThirst ?? 1f;
+
+    float HpPct => (HpMax <= 0) ? 0 : (Hp / HpMax) * 100f;
+    float HungerPct => (HungerMax <= 0) ? 0 : (Hunger / HungerMax) * 100f;
+    float ThirstPct => (ThirstMax <= 0) ? 0 : (Thirst / ThirstMax) * 100f;
+
+    void EnsureRefs()
+    {
+        if (_state?.IsValid() == true &&
+             _health?.IsValid() == true &&
+             _needs?.IsValid() == true)
+            return;
+
+        // Local PlayerState = the state object owned by this connection
+        _state = Scene.GetAllObjects(true)
+            .FirstOrDefault(go =>
+                go.Network?.IsOwner == true &&
+                go.Components.Get<HealthComponent>() != null &&
+                go.Components.Get<NeedsComponent>() != null);
+
+        _health = _state?.Components.Get<HealthComponent>();
+        _needs = _state?.Components.Get<NeedsComponent>();
+    }
+
+
+    protected override int BuildHash()
+    {
+        EnsureRefs();
+        return HashCode.Combine(
+            _health?.Health ?? 0f, _health?.MaxHealth ?? 0f,
+            _needs?.HungerReadout ?? 0f, _needs?.MaxHunger ?? 0f,
+            _needs?.ThirstReadout ?? 0f, _needs?.MaxThirst ?? 0f
+        );
+    }
+}

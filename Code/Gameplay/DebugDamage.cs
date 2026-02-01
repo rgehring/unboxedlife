@@ -1,5 +1,3 @@
-using Sandbox;
-
 namespace UnboxedLife;
 
 public sealed class DebugDamage : Component
@@ -8,15 +6,22 @@ public sealed class DebugDamage : Component
 
 	protected override void OnUpdate()
 	{
-		// Left mouse click (default action)
 		if ( Input.Pressed( "attack1" ) )
 		{
+			DamageMeRpc( DamageAmount );
 			Log.Info( "DebugDamage: attack1 pressed" );
-
-			var health = Components.Get<HealthComponent>();
-			health?.Damage( DamageAmount );
-
 			Log.Info( $"DebugDamage: attempted damage {DamageAmount}" );
+
 		}
+	}
+
+	[Rpc.Host]
+	void DamageMeRpc( float amount )
+	{
+		// Find the server-owned state that points to THIS pawn
+		var state = Scene.GetAllObjects( true )
+			.FirstOrDefault( go => go.Components.Get<PlayerLink>()?.Player == GameObject );
+
+		state?.Components.Get<HealthComponent>()?.Damage( amount );
 	}
 }

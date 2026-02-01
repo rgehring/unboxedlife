@@ -1,0 +1,27 @@
+@using System.Linq
+@using Sandbox
+@using Sandbox.UI
+@using UnboxedLife
+@inherits Panel
+
+<root class="status">
+    <ResourceRow Label="Stone" Value="@Stone.ToString()" />
+</root>
+
+@code
+{
+    int Stone;
+
+    public override void Tick()
+    {
+        var wallets = Game.ActiveScene.GetAllComponents<ResourceWallet>().ToArray();
+
+        var wallet = wallets.FirstOrDefault(x => x.Network.IsOwner)
+                  ?? (Networking.IsHost ? wallets.FirstOrDefault() : null);
+
+        if (wallet is null)
+            return;
+
+        Stone = wallet.Stone;
+    }
+}

@@ -1,6 +1,3 @@
-using Sandbox;
-using System;
-
 namespace UnboxedLife;
 
 public sealed class NeedsComponent : Component
@@ -15,8 +12,9 @@ public sealed class NeedsComponent : Component
 	// Damage per second when empty
 	[Property] public float StarveDamagePerSecond { get; set; } = 2.0f;
 
-	[Sync] public float Hunger { get; private set; }
-	[Sync] public float Thirst { get; private set; }
+	[Sync( SyncFlags.FromHost )] public float Hunger { get; private set; }
+	[Sync( SyncFlags.FromHost )] public float Thirst { get; private set; }
+
 
 	[Property, ReadOnly] public float HungerReadout => Hunger;
 	[Property, ReadOnly] public float ThirstReadout => Thirst;

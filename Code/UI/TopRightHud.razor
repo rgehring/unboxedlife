@@ -1,0 +1,14 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel
+@namespace Sandbox
+
+<root class="netrole">
+    <label>@RoleText</label>
+</root>
+
+@code
+{
+    string RoleText => Networking.IsHost ? "HOST" : (Networking.IsClient ? "CLIENT" : "OFFLINE");
+    protected override int BuildHash() => System.HashCode.Combine(RoleText);
+}
