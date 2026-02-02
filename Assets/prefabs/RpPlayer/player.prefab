@@ -180,29 +180,29 @@
         },
         "Clothing": [
           {
-            "Clothing": "models/citizen_clothes/hat/flatcap/flatcap.clothing",
-            "Tint": 0.39094576
+            "Clothing": "models/citizen_clothes/hat/baseball_cap/baseball_cap_blue_white.clothing",
+            "Tint": 0.10833039
           },
           {
-            "Clothing": "models/citizen_clothes/shorts/boxing_shorts/boxing_shorts_red.clothing",
-            "Tint": 0.041598458
+            "Clothing": "models/citizen_clothes/trousers/cargopants/brown_cargo_pants.clothing",
+            "Tint": 0.18509239
           },
           {
-            "Clothing": "models/citizen_clothes/shirt/loose_crop_top/loose_crop_top.clothing",
-            "Tint": 0.11535502
+            "Clothing": "models/citizen_clothes/shirt/loose_shirt/loose_shirt.clothing",
+            "Tint": 0.88400334
           },
           {
-            "Clothing": "models/citizen_clothes/shoes/sneakers/sneakers.clothing",
-            "Tint": 0.69914037
+            "Clothing": "models/citizen_clothes/shoes/boxing_boots/boxing_boots.clothing",
+            "Tint": 0.48329768
           },
           {
-            "Clothing": "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.clothing",
-            "Tint": 0.9416403
+            "Clothing": "models/citizen_clothes/vest/tactical_vest/models/tactical_vest_army.clothing",
+            "Tint": 0.18363664
           }
         ],
-        "ManualAge": 0.40234607,
-        "ManualHeight": 0.5093492,
-        "ManualTint": 0.5536193,
+        "ManualAge": 0.32595566,
+        "ManualHeight": 0.3540157,
+        "ManualTint": 0.22360873,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -260,7 +260,7 @@
             "__enabled": true,
             "Flags": 0,
             "AnimationGraph": null,
-            "BodyGroups": 161,
+            "BodyGroups": 69,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
@@ -268,7 +268,7 @@
             "MaterialGroup": "default",
             "MaterialOverride": null,
             "Materials": null,
-            "Model": "models/citizen_human/citizen_human_male.vmdl",
+            "Model": "models/citizen/citizen.vmdl",
             "Morphs": {},
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
@@ -302,10 +302,10 @@
         ],
         "Children": [
           {
-            "__guid": "bd5c07ff-d261-473f-bb72-aca72606df6f",
+            "__guid": "52ca6192-81d0-494c-8c32-8ec3c08c11f6",
             "__version": 2,
             "Flags": 0,
-            "Name": "Clothing - flatcap",
+            "Name": "Clothing - baseball_cap_blue_white",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -319,7 +319,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "721cfb18-6ec0-4211-b6cd-06ebfbb42ac8",
+                "__guid": "d9d6790e-914a-4ecb-b20e-35ce727cc78e",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -336,7 +336,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/hat/flatcap/models/flatcap_m_human.vmdl",
+                "Model": "models/citizen_clothes/hat/baseball_cap/model/baseball_cap_blue_white.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -371,10 +371,10 @@
             "Children": []
           },
           {
-            "__guid": "a0ecc0d0-7701-4a4f-afec-e4a90349a029",
+            "__guid": "bc345c63-da84-4506-96ee-2d7aba3d2def",
             "__version": 2,
             "Flags": 0,
-            "Name": "Clothing - boxing_shorts_red",
+            "Name": "Clothing - brown_cargo_pants",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -388,7 +388,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "221890d8-aa5b-422f-a854-d0a44126dd65",
+                "__guid": "4477c6ba-c4c3-4c42-8687-a124c067c2d3",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -405,7 +405,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/shorts/boxing_shorts/models/boxing_shorts_red_m_human.vmdl",
+                "Model": "models/citizen_clothes/trousers/cargopants/models/brown_cargo_pants.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -440,10 +440,10 @@
             "Children": []
           },
           {
-            "__guid": "647e64fa-7dc6-4867-8b74-cecdf6d0e9f5",
+            "__guid": "f08d7bc0-3374-43f9-86c1-5ab5feb82154",
             "__version": 2,
             "Flags": 0,
-            "Name": "Clothing - loose_crop_top",
+            "Name": "Clothing - boxing_boots",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -457,7 +457,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "33f61d95-b73e-4c6d-9109-ad066f83fc1c",
+                "__guid": "62ecba9f-0c24-4024-90a0-829f7fe59af5",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -474,7 +474,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/shirt/loose_crop_top/models/loose_crop_top_m_human.vmdl",
+                "Model": "models/citizen_clothes/shoes/boxing_boots/models/boxing_boots.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -509,10 +509,10 @@
             "Children": []
           },
           {
-            "__guid": "590a82ca-be6a-49cf-b43c-4b4f6714436b",
+            "__guid": "f77cad4d-a54b-4169-9d75-ff7dbae8d280",
             "__version": 2,
             "Flags": 0,
-            "Name": "Clothing - sneakers",
+            "Name": "Clothing - tactical_vest_army",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -526,7 +526,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "72038c2e-d9ea-49a7-a6f2-afd1e74ca7ef",
+                "__guid": "e3d2d827-eb57-441f-b0f2-2d423e8c6056",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -543,76 +543,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/shoes/sneakers/models/sneakers_m_human.vmdl",
-                "Morphs": {},
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "Parameters": {
-                  "bools": {},
-                  "ints": {},
-                  "floats": {},
-                  "vectors": {},
-                  "rotations": {}
-                },
-                "PlaybackRate": 1,
-                "RenderOptions": {
-                  "GameLayer": true,
-                  "OverlayLayer": false,
-                  "BloomLayer": false,
-                  "AfterUILayer": false
-                },
-                "RenderType": "On",
-                "Sequence": {
-                  "Name": null,
-                  "Looping": true,
-                  "Blending": false
-                },
-                "Tint": "1,1,1,1",
-                "UseAnimGraph": true
-              }
-            ],
-            "Children": []
-          },
-          {
-            "__guid": "c8b1f5f6-f7b7-40ba-9433-9d3fcf86149e",
-            "__version": 2,
-            "Flags": 0,
-            "Name": "Clothing - tactical_vest",
-            "Position": "0,0,0",
-            "Rotation": "0,0,0,1",
-            "Scale": "1,1,1",
-            "Tags": "clothing",
-            "Enabled": true,
-            "NetworkMode": 2,
-            "NetworkFlags": 0,
-            "NetworkOrphaned": 0,
-            "NetworkTransmit": true,
-            "OwnerTransfer": 1,
-            "Components": [
-              {
-                "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "ccb47379-d1fc-4390-85ed-f5496103c0b6",
-                "__enabled": true,
-                "Flags": 0,
-                "AnimationGraph": null,
-                "BodyGroups": 18446744073709551615,
-                "BoneMergeTarget": {
-                  "_type": "component",
-                  "component_id": "00e664c6-84ed-4da4-a5f0-723ec878894e",
-                  "go": "ae3df6b7-d2d4-4464-acdf-04244e73bdd7",
-                  "component_type": "SkinnedModelRenderer"
-                },
-                "CreateAttachments": false,
-                "CreateBoneObjects": false,
-                "LodOverride": null,
-                "MaterialGroup": null,
-                "MaterialOverride": null,
-                "Materials": null,
-                "Model": "models/citizen_clothes/vest/tactical_vest/models/tactical_vest_m_human.vmdl",
+                "Model": "models/citizen_clothes/vest/tactical_vest/models/tactical_vest_army.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,

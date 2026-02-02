@@ -141,7 +141,7 @@
       "Components": [
         {
           "__type": "UnboxedLife.UbxNetwork",
-          "__guid": "757a1830-1157-4143-bbb6-ef5f1c67d607",
+          "__guid": "25125ef2-ca47-4ff7-b4bb-41d377ee63e2",
           "__enabled": true,
           "Flags": 0,
           "OnComponentDestroy": null,
@@ -514,7 +514,8 @@
         "MovedObjects": []
       },
       "__PrefabIdToInstanceId": {
-        "e55a8ec0-8739-4d1d-bd70-413c97687196": "dd53e492-c5d5-4330-8b1e-02ac872f1b3c"
+        "e55a8ec0-8739-4d1d-bd70-413c97687196": "dd53e492-c5d5-4330-8b1e-02ac872f1b3c",
+        "30c8d8ac-18ed-4ad3-9153-adff9c3e3109": "ca54fc6b-4d41-47ce-971b-c2a6323a6829"
       }
     },
     {
@@ -522,8 +523,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Object",
-      "Position": "755.3525,-372.4351,253.9045",
-      "Rotation": "0,0,0,1",
+      "Position": "618.9178,-149.8107,342.5909",
+      "Rotation": "0.01451614,0.02586876,-0.4891483,0.8716961",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,
@@ -554,8 +555,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Object (1)",
-      "Position": "840.4132,-372.4351,253.9045",
-      "Rotation": "0,0,0,1",
+      "Position": "573.9054,-527.2642,353.8126",
+      "Rotation": "0.000001124691,-0.000002688494,0.3859262,0.9225296",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,
@@ -586,8 +587,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Object (2)",
-      "Position": "840.4132,-239.0096,253.9045",
-      "Rotation": "0,0,0,1",
+      "Position": "927.6414,-208.9189,333.2283",
+      "Rotation": "0.01340157,0.003906476,-0.959951,0.27982",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,
@@ -618,8 +619,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "Object (3)",
-      "Position": "978.2709,-239.0096,253.9045",
-      "Rotation": "0,0,0,1",
+      "Position": "867.4167,-505.6712,333.2283",
+      "Rotation": "0.0008394952,-0.0002486526,0.9588248,0.2839972",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,

@@ -6,23 +6,18 @@ namespace UnboxedLife;
 [Title( "Ubx Custom Network Helper" )]
 [Category( "Ubx Networking" )]
 [Icon( "electrical_services" )]
+
 public sealed class UbxNetwork : Component, Component.INetworkListener
-{
-	/// <summary>
-	/// Create a server (if we're not joining one)
-	/// </summary>
-	[Property] public bool StartServer { get; set; } = true;
-
-	/// <summary>
-	/// The prefab to spawn for the player to control.
-	/// </summary>
-	[Property] public GameObject PlayerPrefab { get; set; }
-
+{	
 	/// <summary>
 	/// A list of points to choose from randomly to spawn the player in. If not set, we'll spawn at the
 	/// location of the NetworkHelper object.
 	/// </summary>
 	[Property] public List<GameObject> SpawnPoints { get; set; }
+
+	[Property] public bool StartServer { get; set; } = true;
+	[Property] public GameObject PlayerPrefab { get; set; }
+	private readonly Dictionary<Connection, GameObject> _pawnByConn = new();
 
 
 	protected override void OnStart()
@@ -47,23 +42,92 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 	/// </summary>
 	public void OnActive( Connection channel )
 	{
+		if ( !Networking.IsHost ) return;
 
 		Log.Info( $"[UbxNetwork.cs]Player '{channel.DisplayName}' has joined the game" );
 
-		if ( !PlayerPrefab.IsValid() )
+		var pawn = SpawnPlayerFor( channel );
+		if ( pawn is null )
 			return;
 
-		//
-		// Find a spawn location for this player
-		//
+		var state = GetPlayerStateFor( channel );
+		if ( state is not null )
+		{
+			LinkPawnAndState( pawn, state );
+		}
+		// else: PlayerStateSpawner will create it shortly and link from its side
+	}
+
+
+	private GameObject SpawnPlayerFor( Connection channel )
+	{
+		if ( !Networking.IsHost )
+			return null;
+
+		if ( !PlayerPrefab.IsValid() )
+			return null;
+
 		var startLocation = FindSpawnLocation().WithScale( 1 );
 
-		// Spawn this object and make the client the owner
 		var player = PlayerPrefab.Clone( startLocation, name: $"[UbxNetwork.cs]Player - {channel.DisplayName}" );
-		player.NetworkMode = NetworkMode.Object;  // critical
+		player.NetworkMode = NetworkMode.Object;
 		player.NetworkSpawn( channel );
+		Log.Info( $"[Spawn] pawn id={player.Id} name={player.Name} owner={player.Network?.OwnerId}" );
 
+		_pawnByConn[channel] = player;
+		return player;
 	}
+
+
+	/// <summary>
+	/// Host only - Respawn the player for the given connection
+	/// </summary>
+	public void Respawn( Connection channel )
+	{
+		if ( !Networking.IsHost ) return;
+
+		var state = GetPlayerStateFor( channel );
+		if ( state is null )
+		{
+			Log.Warning( $"[Respawn] No PlayerState found for {channel.DisplayName} ({channel.SteamId})" );
+			return;
+		}
+
+		if ( _pawnByConn.TryGetValue( channel, out var oldPawn ) )
+		{
+			if ( oldPawn.IsValid() )
+				Log.Info( $"[Respawn] destroying pawn id={oldPawn.Id} name={oldPawn.Name} owner={oldPawn.Network?.OwnerId}" );
+			
+			oldPawn.Destroy();
+
+			_pawnByConn.Remove( channel ); // remove stale ref either way
+		}
+
+		var newPawn = SpawnPlayerFor( channel );
+		if ( newPawn is null )
+			return;
+
+		LinkPawnAndState( newPawn, state );
+	}
+
+
+	private GameObject GetPlayerStateFor( Connection channel )
+	{
+		return Scene.GetAllObjects( true )
+			.FirstOrDefault( go =>
+				go.Network?.Owner == channel &&
+				go.Components.Get<HealthComponent>() is not null );
+	}
+
+	private void LinkPawnAndState( GameObject pawn, GameObject state )
+	{
+		if ( pawn is null || state is null )
+			return;
+
+		pawn.Components.Get<PlayerLink>()?.SetState( state );
+		state.Components.Get<PlayerLink>()?.SetPlayer( pawn );
+	}
+
 
 	/// <summary>
 	/// Find the most appropriate place to respawn

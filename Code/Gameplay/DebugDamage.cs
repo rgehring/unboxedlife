@@ -6,21 +6,31 @@ public sealed class DebugDamage : Component
 
 	protected override void OnUpdate()
 	{
+		// Only the simulating side should read input.
+		// For client-owned pawns: the owning client is NOT a proxy; host/other clients ARE proxies.
+		if ( GameObject.Network?.IsProxy ?? true )
+			return;
+
 		if ( Input.Pressed( "attack1" ) )
 		{
 			DamageMeRpc( DamageAmount );
-			Log.Info( "DebugDamage: attack1 pressed" );
-			Log.Info( $"DebugDamage: attempted damage {DamageAmount}" );
-
+			Log.Info( $"DebugDamage: requested {DamageAmount} damage" );
 		}
 	}
 
 	[Rpc.Host]
-	void DamageMeRpc( float amount )
+	private void DamageMeRpc( float amount )
 	{
-		// Find the server-owned state that points to THIS pawn
+		if ( !Networking.IsHost ) return;
+
+		var owner = GameObject.Network?.Owner;
+		if ( owner is null ) return;
+
+		// Find the client-owned PlayerState for this pawn’s owner (same idea as UbxNetwork.GetPlayerStateFor)
 		var state = Scene.GetAllObjects( true )
-			.FirstOrDefault( go => go.Components.Get<PlayerLink>()?.Player == GameObject );
+			.FirstOrDefault( go =>
+				go.Network?.Owner == owner &&
+				go.Components.Get<HealthComponent>() is not null );
 
 		state?.Components.Get<HealthComponent>()?.Damage( amount );
 	}

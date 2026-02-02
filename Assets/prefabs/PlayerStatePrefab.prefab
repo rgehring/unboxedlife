@@ -35,7 +35,7 @@
         "__guid": "8a0dcfe7-f255-4f83-b896-8ce220bac593",
         "__enabled": true,
         "Flags": 0,
-        "HungerDrainPerSecond": 1,
+        "HungerDrainPerSecond": 0.1,
         "HungerReadout": 0,
         "MaxHunger": 100,
         "MaxThirst": 100,
@@ -45,8 +45,8 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "StarveDamagePerSecond": 10,
-        "ThirstDrainPerSecond": 1,
+        "StarveDamagePerSecond": 1,
+        "ThirstDrainPerSecond": 0.1,
         "ThirstReadout": 0
       },
       {

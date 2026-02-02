@@ -4,13 +4,18 @@ public sealed class PlayerStateSpawner : Component, Component.INetworkListener
 {
 	[Property] public GameObject PlayerStatePrefab { get; set; }
 
-	public void OnActive( Connection c )
+	public async void OnActive( Connection c )
 	{
 		if ( !Networking.IsHost ) return;
 
-		// Find the player pawn owned by this connection
-		var player = Scene.GetAllObjects( true )
-			.FirstOrDefault( go => go.Network?.Owner == c );
+		GameObject player = null;
+		for ( int i = 0; i < 30 && player is null; i++ ) // ~0.5s at 60fps
+		{
+			player = Scene.GetAllObjects( true )
+				.FirstOrDefault( go => go.Network?.Owner == c && go.Components.Get<NetworkIdentification>() is not null );
+
+			if ( player is null ) await GameTask.Yield();
+		}
 
 		if ( player is null || !PlayerStatePrefab.IsValid() )
 			return;
@@ -25,8 +30,6 @@ public sealed class PlayerStateSpawner : Component, Component.INetworkListener
 			$"[HOST SPAWN] State={state.Id} Active={state.Network.Active} " +
 			$"Mode={state.NetworkMode} Owner={state.Network.OwnerId}"
 		);
-
-
 
 		// Link both ways
 		player.Components.Get<PlayerLink>()?.SetState( state );
