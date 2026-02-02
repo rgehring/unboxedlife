@@ -92,12 +92,17 @@
         "__enabled": true,
         "Flags": 0,
         "DamageAmount": 25,
+        "MinerPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/passive income device/cryptominer.prefab"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null
+        "OnComponentUpdate": null,
+        "SpawnDistance": 80
       }
     ],
     "Children": [

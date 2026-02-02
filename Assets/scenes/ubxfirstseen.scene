@@ -194,20 +194,6 @@
       "OwnerTransfer": 1,
       "Components": [
         {
-          "__type": "UnboxedLife.TestInteractable",
-          "__guid": "ba5fd063-4a67-4a91-9d89-0cc722d84d62",
-          "__enabled": true,
-          "Flags": 0,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Prompt": "Test Use",
-          "UseDistance": 120
-        },
-        {
           "__type": "Sandbox.BoxCollider",
           "__guid": "1115c46c-e031-476f-8fc8-e0af01f87467",
           "__enabled": true,
@@ -259,31 +245,6 @@
           },
           "RenderType": "On",
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "UnboxedLife.MiningNode",
-          "__guid": "65724963-0123-47b9-98b2-f06de1c3934c",
-          "__enabled": true,
-          "Flags": 0,
-          "ChunkColliderRadius": 9,
-          "ChunkDownOffset": 10,
-          "ChunkScale": 0.35,
-          "ChunkScatterRadius": 25,
-          "MaxChunks": 5,
-          "MaxHits": 5,
-          "MinChunks": 3,
-          "NodeName": "Rock",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Prompt": "Use",
-          "RespawnSeconds": 30,
-          "SecondsPerHit": 1,
-          "StonePerNode": 10,
-          "UseDistance": 120
         }
       ],
       "Children": []
@@ -294,7 +255,14 @@
       "__Prefab": "prefabs/resourceprefabs/rocknode_01.prefab",
       "__PrefabInstancePatch": {
         "AddedObjects": [],
-        "RemovedObjects": [],
+        "RemovedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "3e3fc7b2-9eed-48f5-8642-e259a461db98"
+            }
+          }
+        ],
         "PropertyOverrides": [
           {
             "Target": {
@@ -326,8 +294,7 @@
       "__PrefabIdToInstanceId": {
         "7397bde0-1c81-4542-9198-d6654037f482": "60e233c3-eac4-4ea3-9ab3-ca80b480d66c",
         "ea1a21bb-54d6-4156-8025-b9948640dae0": "9ccd3956-c806-450a-8b63-be960e0a1447",
-        "970cdf26-89e2-478b-a8f7-385221ec098d": "5efe28fc-a12e-4893-9810-7ffd481444ad",
-        "3e3fc7b2-9eed-48f5-8642-e259a461db98": "a5e96898-7fc9-4a74-841e-a6373d5e8a87"
+        "970cdf26-89e2-478b-a8f7-385221ec098d": "5efe28fc-a12e-4893-9810-7ffd481444ad"
       }
     },
     {
@@ -336,7 +303,14 @@
       "__Prefab": "prefabs/resourceprefabs/rocknode_v2.prefab",
       "__PrefabInstancePatch": {
         "AddedObjects": [],
-        "RemovedObjects": [],
+        "RemovedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "7001f128-db5f-4737-a409-53dbd2a53fd0"
+            }
+          }
+        ],
         "PropertyOverrides": [
           {
             "Target": {
@@ -353,14 +327,6 @@
             },
             "Property": "Scale",
             "Value": "2,2,2"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "7001f128-db5f-4737-a409-53dbd2a53fd0"
-            },
-            "Property": "RespawnSeconds",
-            "Value": 5
           }
         ],
         "MovedObjects": []
@@ -368,8 +334,7 @@
       "__PrefabIdToInstanceId": {
         "391822bd-0f2b-42da-b417-bf934fc6a2af": "295077f3-578c-457f-acb3-720710516758",
         "22cc0fec-9648-4d1a-b55f-83b54f383d47": "4eb11af7-8394-46f2-83c9-d5954143df1a",
-        "5509e661-6560-485e-9fe6-9d97db63864f": "57e24631-ce4c-4411-aa9d-84e08f9374b7",
-        "7001f128-db5f-4737-a409-53dbd2a53fd0": "dbfa7211-023e-460a-8e99-4ead2a551e84"
+        "5509e661-6560-485e-9fe6-9d97db63864f": "57e24631-ce4c-4411-aa9d-84e08f9374b7"
       }
     },
     {
