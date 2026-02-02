@@ -62,11 +62,10 @@
         "OnComponentUpdate": null
       },
       {
-        "__type": "UnboxedLife.DebugDamage",
-        "__guid": "ed308688-82c9-44ab-aa20-de8040a44ae7",
+        "__type": "NetworkIdentification",
+        "__guid": "7a975762-f0ef-4e23-a670-de3591d035be",
         "__enabled": true,
         "Flags": 0,
-        "DamageAmount": 25,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -75,10 +74,24 @@
         "OnComponentUpdate": null
       },
       {
-        "__type": "NetworkIdentification",
-        "__guid": "7a975762-f0ef-4e23-a670-de3591d035be",
+        "__type": "UnboxedLife.BankAccount",
+        "__guid": "8af94d1e-96bb-4763-bf55-62d09c00aaa1",
         "__enabled": true,
         "Flags": 0,
+        "Money": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "UnboxedLife.DebugTool",
+        "__guid": "a98f3648-4170-4af2-b264-6e1d4633e47a",
+        "__enabled": true,
+        "Flags": 0,
+        "DamageAmount": 25,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,

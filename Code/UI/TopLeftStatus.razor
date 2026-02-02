@@ -1,27 +1,38 @@
 @using System.Linq
+@using System
 @using Sandbox
 @using Sandbox.UI
 @using UnboxedLife
 @inherits Panel
 
 <root class="status">
-    <ResourceRow Label="Stone" Value="@Stone.ToString()" />
+    <ResourceRow Label="Money" Value="@Money.ToString()" />
 </root>
 
 @code
 {
-    int Stone;
+    GameObject _state;
+    BankAccount _bank;
 
-    public override void Tick()
+    int Money => _bank?.Money ?? 0;
+
+    void EnsureRefs()
     {
-        var wallets = Game.ActiveScene.GetAllComponents<ResourceWallet>().ToArray();
-
-        var wallet = wallets.FirstOrDefault(x => x.Network.IsOwner)
-                  ?? (Networking.IsHost ? wallets.FirstOrDefault() : null);
-
-        if (wallet is null)
+        if (_state?.IsValid() == true && _bank?.IsValid() == true)
             return;
 
-        Stone = wallet.Stone;
+        // Local PlayerState = owned by this connection (same pattern as BottomLeftVitals)
+        _state = Scene.GetAllObjects(true)
+            .FirstOrDefault(go =>
+                go.Network?.IsOwner == true &&
+                go.Components.Get<BankAccount>() != null);
+
+        _bank = _state?.Components.Get<BankAccount>();
+    }
+
+    protected override int BuildHash()
+    {
+        EnsureRefs();
+        return HashCode.Combine(Money);
     }
 }
