@@ -1,0 +1,82 @@
+@namespace UnboxedLife
+@using Sandbox
+@using Sandbox.UI
+@inherits Panel
+
+<root class="shop @(Open ? "open" : "closed")">
+    <div class="window">
+        <div class="title">Shop</div>
+
+        <div class="row">
+            <div class="label">Money</div>
+            <div class="value">@Money</div>
+        </div>
+
+        <div class="sep" />
+
+        <div class="cats">
+            @foreach (var c in Enum.GetValues<ShopCategory>())
+            {
+                <button class="cat @(c == Category ? "active" : "")" onclick=@(() => Category = c)>@c</button>
+            }
+        </div>
+
+        <div class="list">
+            @foreach (var it in ItemsInCategory)
+            {
+                <div class="item">
+                    <div class="name">@it.Name</div>
+                    <div class="price">$@it.Price</div>
+                    <button class="buy" disabled="@(Money < it.Price)" onclick=@(() => Buy(it.Id))>Buy</button>
+                </div>
+            }
+        </div>
+
+        <div class="hint">Tab to close</div>
+    </div>
+</root>
+
+@code
+{
+    [Parameter] public bool Open { get; set; }
+
+    private ShopCategory Category = ShopCategory.Devices;
+
+    private UbxNetwork Net => Scene.GetAllComponents<UbxNetwork>().FirstOrDefault();
+
+    private int Money =>
+        Scene.GetAllComponents<BankAccount>()
+            .FirstOrDefault(a => a.GameObject.Network?.IsOwner == true)
+            ?.Money ?? 0;
+
+    private IEnumerable<ShopItemDef> ItemsInCategory =>
+        (Net?.ShopItems ?? new List<ShopItemDef>())
+            .Where(x => x != null && x.Category == Category);
+
+    protected override int BuildHash()
+    {
+        // include count so UI refreshes if you edit the list
+        var count = Net?.ShopItems?.Count ?? 0;
+        return HashCode.Combine(Open, Money, Category, count);
+    }
+
+    private void Buy(string itemId)
+    {
+        var pawn = Scene.GetAllObjects(true)
+            .FirstOrDefault(go =>
+                go.Network?.IsOwner == true &&
+                go.Components.Get<NetworkIdentification>() != null);
+
+        if (pawn is null)
+            return;
+
+        var pc = pawn.Components.Get<Sandbox.PlayerController>();
+        var eyePos = pc?.EyePosition ?? pawn.WorldPosition;
+        var forward = pc?.EyeAngles.Forward ?? pawn.WorldRotation.Forward;
+
+        var pos = eyePos + forward * 80f + Vector3.Up * 10f;
+        var rot = Rotation.LookAt(forward, Vector3.Up);
+
+        Net?.RequestBuyItemRpc(itemId, pos, rot);
+    }
+}

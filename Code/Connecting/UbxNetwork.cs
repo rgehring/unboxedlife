@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using Sandbox;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace UnboxedLife;
 
 /// <summary>
@@ -14,15 +19,69 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 	/// location of the NetworkHelper object.
 	/// </summary>
 	[Property] public List<GameObject> SpawnPoints { get; set; }
-
 	[Property] public bool StartServer { get; set; } = true;
 	[Property] public GameObject PlayerPrefab { get; set; }
 	private readonly Dictionary<Connection, GameObject> _pawnByConn = new();
+	[Property] public GameObject CryptoMinerPrefab { get; set; }
+	[Property] public int CryptoMinerCost { get; set; } = 100;
+	
+	[Property] public List<ShopItemDef> ShopItems { get; set; } = new();
+	private ShopItemDef FindShopItem( string id )
+		=> ShopItems?.FirstOrDefault( x => x != null && x.Id == id );
 
-
-	protected override void OnStart()
+	private BankAccount GetBankAccountFor( Connection channel )
 	{
+		var state = GetPlayerStateFor( channel );
+		return state?.Components.Get<BankAccount>();
 	}
+
+
+
+	[Rpc.Host]
+	public void RequestBuyItemRpc( string itemId, Vector3 pos, Rotation rot )
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		var buyer = Rpc.Caller;
+		if ( buyer is null )
+			return;
+
+		var item = FindShopItem( itemId );
+		if ( item is null )
+		{
+			Log.Warning( $"[Shop] Unknown item '{itemId}'" );
+			return;
+		}
+
+		if ( !item.Prefab.IsValid() )
+		{
+			Log.Warning( $"[Shop] Prefab not set for '{itemId}'" );
+			return;
+		}
+
+		// Optional anti-abuse: don't allow spawning very far from the buyer's pawn
+		if ( _pawnByConn.TryGetValue( buyer, out var pawn ) && pawn.IsValid() )
+		{
+			if ( (pos - pawn.WorldPosition).Length > 500f )
+			{
+				Log.Warning( $"[Shop] rejected spawn too far for '{itemId}'" );
+				return;
+			}
+		}
+
+		var bank = GetBankAccountFor( buyer );
+		if ( bank is null )
+			return;
+
+		if ( !bank.TrySpend( item.Price ) )
+			return;
+
+		var go = item.Prefab.Clone( pos, rot );
+		go.NetworkMode = NetworkMode.Object;
+		go.NetworkSpawn( buyer );
+	}
+
 
 	protected override async Task OnLoad()
 	{

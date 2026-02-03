@@ -1,8 +1,39 @@
+@using Sandbox
 @using Sandbox.UI
 @inherits Panel
+@namespace UnboxedLife
 
-<root class="hud">
-  <TopLeftStatus />
-  <BottomLeftVitals />
-  <TopRightHud />
+<root class="screen">
+    <div class="hudlayer">
+        <TopLeftStatus />
+        <BottomLeftVitals />
+        <TopRightHud />
+    </div>
+
+    <ShopPanel Open="@ShopOpen" />
 </root>
+
+@code
+{
+    private bool ShopOpen;
+
+    public override void Tick()
+    {
+        if (Input.Pressed("shop"))
+        {
+            ShopOpen = !ShopOpen;
+
+            // When shop is open, allow UI interaction.
+            // When closed, lock mouse back to game.
+            Sandbox.Mouse.Visibility = ShopOpen
+                ? Sandbox.MouseVisibility.Visible
+                : Sandbox.MouseVisibility.Hidden;
+        }
+    }
+
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(ShopOpen);
+    }
+}

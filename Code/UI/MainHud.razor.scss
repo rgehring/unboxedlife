@@ -1,3 +1,17 @@
+.screen {
+	width: 100%;
+	height: 100%;
+}
+
+.hudlayer {
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+// keep your existing .status / .vitals / etc styles below
+
+
 .netrole {
     position: absolute;
     top: 50px;

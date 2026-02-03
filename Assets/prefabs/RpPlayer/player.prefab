@@ -302,7 +302,7 @@
         ],
         "Children": [
           {
-            "__guid": "52ca6192-81d0-494c-8c32-8ec3c08c11f6",
+            "__guid": "33d59fd3-d371-4b68-86b8-94c3ba0104d3",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - baseball_cap_blue_white",
@@ -319,7 +319,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "d9d6790e-914a-4ecb-b20e-35ce727cc78e",
+                "__guid": "80619534-7ecd-44ce-9d2d-9b592d215a38",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -371,7 +371,7 @@
             "Children": []
           },
           {
-            "__guid": "bc345c63-da84-4506-96ee-2d7aba3d2def",
+            "__guid": "5e0aca15-c59d-4524-a6e4-f12769a37cf7",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - brown_cargo_pants",
@@ -388,7 +388,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "4477c6ba-c4c3-4c42-8687-a124c067c2d3",
+                "__guid": "9eb754d5-c0a1-4a57-ba72-e298d2f8a4a8",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -440,7 +440,7 @@
             "Children": []
           },
           {
-            "__guid": "f08d7bc0-3374-43f9-86c1-5ab5feb82154",
+            "__guid": "4d62af07-3c4c-4608-9daf-50ce7be03049",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - boxing_boots",
@@ -457,7 +457,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "62ecba9f-0c24-4024-90a0-829f7fe59af5",
+                "__guid": "0f092169-f598-4332-a983-fb5ec8688991",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -509,7 +509,7 @@
             "Children": []
           },
           {
-            "__guid": "f77cad4d-a54b-4169-9d75-ff7dbae8d280",
+            "__guid": "0bd97ef2-d4f8-4322-b504-1940ce850260",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - tactical_vest_army",
@@ -526,7 +526,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "e3d2d827-eb57-441f-b0f2-2d423e8c6056",
+                "__guid": "81e1fc9c-4e65-4a4d-b7a0-17ca758ccd2c",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

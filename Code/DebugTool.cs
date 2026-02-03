@@ -13,7 +13,7 @@ public sealed class DebugTool : Component
 		if ( GameObject.Network?.IsOwner != true )
 			return;
 
-		if ( !Input.Pressed( "attack1" ) )
+		if ( !Input.Pressed( "F" ) )
 			return;
 
 		// Always target the actual pawn (your project marks it with NetworkIdentification)
