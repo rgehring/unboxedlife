@@ -85,7 +85,7 @@ public sealed class HealthComponent : Component
 
 		// Make it networked so all clients see it
 		ragdoll.NetworkMode = NetworkMode.Object;
-		ragdoll.NetworkSpawn(); // spawns to everyone :contentReference[oaicite:2]{index=2}
+		ragdoll.NetworkSpawn(); // spawns to everyone
 
 		// Optional cleanup
 		ragdoll.Components.GetOrCreate<RagdollCleanup>();

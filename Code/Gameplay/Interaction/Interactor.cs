@@ -18,10 +18,9 @@ public sealed class Interactor : Component
 	protected override void OnUpdate()
 	{
 		// Find the local pawn (same pattern as DebugTool.cs)
-		var pawn = Scene.GetAllObjects( true )
-			.FirstOrDefault( go =>
-				go.Network?.IsOwner == true &&
-				go.Components.Get<NetworkIdentification>() is not null );
+		var pawn = PawnResolver.GetLocalPawn( Scene );
+		if ( pawn is null )
+			return;
 
 		if ( pawn is null )
 			return;
@@ -69,10 +68,11 @@ public sealed class Interactor : Component
 		var pawn = Scene.GetAllObjects( true )
 			.FirstOrDefault( go =>
 				go.Network?.Owner == Rpc.Caller &&
-				go.Components.Get<NetworkIdentification>() is not null );
+				go.Components.Get<Sandbox.PlayerController>() is not null );
 
 		if ( pawn is null )
 			return;
+
 
 		if ( target is null || !target.IsValid )
 			return;

@@ -7,7 +7,7 @@
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "",
+    "Tags": "player",
     "Enabled": true,
     "NetworkMode": 1,
     "NetworkFlags": 0,
@@ -213,8 +213,8 @@
         "WorkshopItems": []
       },
       {
-        "__type": "PlayerLink",
-        "__guid": "3fb66ccd-35a6-4515-8672-09f5b6319dd2",
+        "__type": "UnboxedLife.NetworkIdentification",
+        "__guid": "8142ac8c-b40f-45a5-aaf5-6175237d49f1",
         "__enabled": true,
         "Flags": 0,
         "OnComponentDestroy": null,
@@ -225,8 +225,8 @@
         "OnComponentUpdate": null
       },
       {
-        "__type": "UnboxedLife.NetworkIdentification",
-        "__guid": "071fc85b-d5ed-4ad8-85d7-1397c76fa50e",
+        "__type": "UnboxedLife.PlayerLink",
+        "__guid": "436d7172-6a6c-4dc4-ae87-378e282df969",
         "__enabled": true,
         "Flags": 0,
         "OnComponentDestroy": null,
@@ -234,8 +234,7 @@
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "TagToApply": "player"
+        "OnComponentUpdate": null
       }
     ],
     "Children": [
@@ -261,7 +260,7 @@
             "__enabled": true,
             "Flags": 0,
             "AnimationGraph": null,
-            "BodyGroups": 69,
+            "BodyGroups": 137,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
@@ -269,7 +268,7 @@
             "MaterialGroup": "default",
             "MaterialOverride": null,
             "Materials": null,
-            "Model": "models/citizen/citizen.vmdl",
+            "Model": "models/citizen_human/citizen_human_male.vmdl",
             "Morphs": {},
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
@@ -280,7 +279,10 @@
             "Parameters": {
               "bools": {},
               "ints": {},
-              "floats": {},
+              "floats": {
+                "scale_height": 1,
+                "scale_heel": 0
+              },
               "vectors": {},
               "rotations": {}
             },
@@ -303,7 +305,7 @@
         ],
         "Children": [
           {
-            "__guid": "36dfe63c-f4d7-499e-a77a-0ca0c3aeb5f9",
+            "__guid": "2c7fd092-c6c6-4811-9262-308634d2130f",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - baseball_cap_blue_white",
@@ -320,7 +322,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "a1b911db-464f-4199-a2bf-3372edbffe94",
+                "__guid": "081e9d29-f50d-4044-9b49-0c9dad28b87f",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -337,7 +339,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/hat/baseball_cap/model/baseball_cap_blue_white.vmdl",
+                "Model": "models/citizen_clothes/hat/baseball_cap/model/baseball_cap_blue_white_m_human.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -372,7 +374,7 @@
             "Children": []
           },
           {
-            "__guid": "add17e73-514d-4db3-b039-e1ba9bfd9b23",
+            "__guid": "0a185be5-d334-4f94-b77b-1f19c01e6b49",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - brown_cargo_pants",
@@ -389,7 +391,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "5d9f04e3-70a4-42ab-87a1-df097e64ff2c",
+                "__guid": "63f666c6-5292-45f5-9429-b9f5af2271da",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -406,7 +408,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/trousers/cargopants/models/brown_cargo_pants.vmdl",
+                "Model": "models/citizen_clothes/trousers/cargopants/models/brown_cargo_pants_m_human.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -441,7 +443,7 @@
             "Children": []
           },
           {
-            "__guid": "4132a60b-d700-482e-af42-b45cf2eaa726",
+            "__guid": "7702e841-b031-49ad-9f76-af0ade5f2e58",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - boxing_boots",
@@ -458,7 +460,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2a181622-836d-4a4b-a4de-93cf5d215491",
+                "__guid": "9f3c2428-f224-4fe5-b3da-9aa22bf05156",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -475,7 +477,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/shoes/boxing_boots/models/boxing_boots.vmdl",
+                "Model": "models/citizen_clothes/shoes/boxing_boots/models/boxing_boots_m_human.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -510,7 +512,7 @@
             "Children": []
           },
           {
-            "__guid": "4e4baa03-80e0-4fb7-9b6e-b3ac99d4decd",
+            "__guid": "7316e480-0426-4079-996c-aa3c2d283ab3",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - tactical_vest_army",
@@ -527,7 +529,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2f251d04-43ed-4ae2-80ce-5ca651ad6a08",
+                "__guid": "b104e3a6-7589-4a23-afbe-73fc528ecea2",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -544,7 +546,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/vest/tactical_vest/models/tactical_vest_army.vmdl",
+                "Model": "models/citizen_clothes/vest/tactical_vest/models/tactical_vest_army_m_human.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,

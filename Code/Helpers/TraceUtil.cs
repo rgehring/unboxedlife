@@ -22,6 +22,8 @@ public static class TraceUtil
 		Sandbox.PlayerController pc,
 		float fallbackEyeHeight,
 		float distance,
+		float radius = 0f,
+		string withAnyTag = null,
 		bool ignorePawnHierarchy = true
 	)
 	{
@@ -32,16 +34,21 @@ public static class TraceUtil
 		var builder = pawn.Scene.Trace
 			.FromTo( start, end );
 
+		if ( radius > 0f )
+			builder = builder.Radius( radius );
+
+		if ( !string.IsNullOrWhiteSpace( withAnyTag ) )
+			builder = builder.WithAnyTags( withAnyTag );
+
 		if ( ignorePawnHierarchy )
 			builder = builder.IgnoreGameObjectHierarchy( pawn.Root );
 
 		var tr = builder.Run();
 
 		if ( DebugEnabled )
-		{
 			pawn.Scene.DebugOverlay.Trace( tr, DebugDuration, true );
-		}
 
 		return tr;
 	}
+
 }

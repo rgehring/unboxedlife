@@ -4,7 +4,7 @@ namespace UnboxedLife;
 
 public sealed class NetworkIdentification : Component
 {
-	[Property] public string TagToApply { get; set; } = "player";
+	/*[Property] public string TagToApply { get; set; } = "player";
 
 	protected override void OnStart()
 	{
@@ -14,4 +14,5 @@ public sealed class NetworkIdentification : Component
 			GameObject.Root.Tags.Add( TagToApply );
 		}
 	}
+	*/
 }

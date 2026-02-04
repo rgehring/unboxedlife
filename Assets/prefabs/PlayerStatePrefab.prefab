@@ -50,18 +50,6 @@
         "ThirstReadout": 0
       },
       {
-        "__type": "PlayerLink",
-        "__guid": "4b153e1e-43ab-483d-9d88-45fb7ec9e88a",
-        "__enabled": true,
-        "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
         "__type": "UnboxedLife.BankAccount",
         "__guid": "8af94d1e-96bb-4763-bf55-62d09c00aaa1",
         "__enabled": true,
@@ -120,6 +108,35 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "TagToApply": "player"
+      },
+      {
+        "__type": "UnboxedLife.PunchAttack",
+        "__guid": "43d03269-ae35-42e3-a351-c8b1e2291566",
+        "__enabled": true,
+        "Flags": 0,
+        "CooldownSeconds": 0.35,
+        "Damage": 10,
+        "EyeHeight": 64,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Radius": 12,
+        "Range": 80
+      },
+      {
+        "__type": "UnboxedLife.PlayerLink",
+        "__guid": "b8e42c97-7edf-4ee3-90d8-c6f5bf7122ca",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [

@@ -339,6 +339,75 @@
       ]
     },
     {
+      "__guid": "dd53e492-c5d5-4330-8b1e-02ac872f1b3c",
+      "__version": 2,
+      "__Prefab": "prefabs/playerstatespawner.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "be25475a-3b1c-442f-abac-7ef99cffb11f"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Components",
+            "IsContainerArray": true,
+            "Data": {
+              "__type": "UnboxedLife.PlayerStateSpawner",
+              "__guid": "be25475a-3b1c-442f-abac-7ef99cffb11f",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PlayerStatePrefab": {
+                "_type": "gameobject",
+                "prefab": "prefabs/playerstateprefab.prefab"
+              }
+            }
+          }
+        ],
+        "RemovedObjects": [
+          {
+            "Id": {
+              "Type": "Component",
+              "IdValue": "30c8d8ac-18ed-4ad3-9153-adff9c3e3109"
+            }
+          }
+        ],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
+            },
+            "Property": "Name",
+            "Value": "PlayerStateSpawner"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
+            },
+            "Property": "Position",
+            "Value": "482.4919,49.41031,457.1652"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "e55a8ec0-8739-4d1d-bd70-413c97687196": "dd53e492-c5d5-4330-8b1e-02ac872f1b3c",
+        "30c8d8ac-18ed-4ad3-9153-adff9c3e3109": "ca54fc6b-4d41-47ce-971b-c2a6323a6829"
+      }
+    },
+    {
       "__guid": "295077f3-578c-457f-acb3-720710516758",
       "__version": 2,
       "__Prefab": "prefabs/resourceprefabs/rocknode_v2.prefab",
@@ -458,103 +527,6 @@
         }
       ],
       "Children": []
-    },
-    {
-      "__guid": "dd53e492-c5d5-4330-8b1e-02ac872f1b3c",
-      "__version": 2,
-      "__Prefab": "prefabs/playerstatespawner.prefab",
-      "__PrefabInstancePatch": {
-        "AddedObjects": [
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "7380d541-cf7c-4185-8bff-f5557fbe982e"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
-            },
-            "PreviousElement": null,
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "PlayerLink",
-              "__guid": "7380d541-cf7c-4185-8bff-f5557fbe982e",
-              "__enabled": true,
-              "Flags": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "be25475a-3b1c-442f-abac-7ef99cffb11f"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
-            },
-            "PreviousElement": {
-              "Type": "Component",
-              "IdValue": "7380d541-cf7c-4185-8bff-f5557fbe982e"
-            },
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UnboxedLife.PlayerStateSpawner",
-              "__guid": "be25475a-3b1c-442f-abac-7ef99cffb11f",
-              "__enabled": true,
-              "Flags": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "PlayerStatePrefab": {
-                "_type": "gameobject",
-                "prefab": "prefabs/playerstateprefab.prefab"
-              }
-            }
-          }
-        ],
-        "RemovedObjects": [
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "30c8d8ac-18ed-4ad3-9153-adff9c3e3109"
-            }
-          }
-        ],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
-            },
-            "Property": "Name",
-            "Value": "PlayerStateSpawner"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
-            },
-            "Property": "Position",
-            "Value": "482.4919,49.41031,457.1652"
-          }
-        ],
-        "MovedObjects": []
-      },
-      "__PrefabIdToInstanceId": {
-        "e55a8ec0-8739-4d1d-bd70-413c97687196": "dd53e492-c5d5-4330-8b1e-02ac872f1b3c",
-        "30c8d8ac-18ed-4ad3-9153-adff9c3e3109": "ca54fc6b-4d41-47ce-971b-c2a6323a6829"
-      }
     }
   ],
   "SceneProperties": {

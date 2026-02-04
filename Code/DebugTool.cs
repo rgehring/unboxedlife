@@ -55,6 +55,13 @@ public sealed class DebugTool : Component
 		RequestSpawnMinerAtRpc( pos, rot );
 	}
 
+	[Button]
+	public void ApplyDamageButton()
+	{
+		DamageMeRpc( DamageAmount );
+		Log.Info( $"DebugTool: requested to apply 25 Damage" );
+
+	}
 
 	[Button]
 	public void AddMoney()
