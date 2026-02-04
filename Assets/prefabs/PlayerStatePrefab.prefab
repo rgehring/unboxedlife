@@ -106,8 +106,7 @@
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "TagToApply": "player"
+        "OnComponentUpdate": null
       },
       {
         "__type": "UnboxedLife.PunchAttack",

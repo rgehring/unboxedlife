@@ -16,6 +16,30 @@
     "OwnerTransfer": 1,
     "Components": [
       {
+        "__type": "UnboxedLife.PlayerLink",
+        "__guid": "436d7172-6a6c-4dc4-ae87-378e282df969",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "UnboxedLife.NetworkIdentification",
+        "__guid": "8142ac8c-b40f-45a5-aaf5-6175237d49f1",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
         "__type": "Sandbox.PlayerController",
         "__guid": "a0b397e6-7bbc-4e3b-b0e2-a2f202d90dd4",
         "__enabled": true,
@@ -122,6 +146,60 @@
         "StartAsleep": false
       },
       {
+        "__type": "UnboxedLife.CombatAnimator",
+        "__guid": "bf9be57e-bb17-4800-b4af-7ceb21272de7",
+        "__enabled": true,
+        "Flags": 0,
+        "AnimHelper": {
+          "_type": "component",
+          "component_id": "1c9570b0-e84a-4b37-9a9d-a023277f18c3",
+          "go": "4efe7544-dde5-4e18-9d8a-1d9c3265a1d2",
+          "component_type": "CitizenAnimationHelper"
+        },
+        "Controller": {
+          "_type": "component",
+          "component_id": "a0b397e6-7bbc-4e3b-b0e2-a2f202d90dd4",
+          "go": "4efe7544-dde5-4e18-9d8a-1d9c3265a1d2",
+          "component_type": "PlayerController"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PunchPoseSeconds": 0.35
+      },
+      {
+        "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+        "__guid": "1c9570b0-e84a-4b37-9a9d-a023277f18c3",
+        "__enabled": true,
+        "Flags": 0,
+        "BodyWeight": 1,
+        "EyeSource": null,
+        "EyesWeight": 1,
+        "HeadWeight": 1,
+        "Height": null,
+        "IkLeftFoot": null,
+        "IkLeftHand": null,
+        "IkRightFoot": null,
+        "IkRightHand": null,
+        "LookAt": null,
+        "LookAtEnabled": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Target": {
+          "_type": "component",
+          "component_id": "00e664c6-84ed-4da4-a5f0-723ec878894e",
+          "go": "ae3df6b7-d2d4-4464-acdf-04244e73bdd7",
+          "component_type": "SkinnedModelRenderer"
+        }
+      },
+      {
         "__type": "Sandbox.Movement.MoveModeWalk",
         "__guid": "9492f094-4625-4962-8bcf-b03b8217a377",
         "__enabled": true,
@@ -211,30 +289,6 @@
         "OnComponentUpdate": null,
         "Source": "Manual",
         "WorkshopItems": []
-      },
-      {
-        "__type": "UnboxedLife.NetworkIdentification",
-        "__guid": "8142ac8c-b40f-45a5-aaf5-6175237d49f1",
-        "__enabled": true,
-        "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
-        "__type": "UnboxedLife.PlayerLink",
-        "__guid": "436d7172-6a6c-4dc4-ae87-378e282df969",
-        "__enabled": true,
-        "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
       }
     ],
     "Children": [
@@ -280,8 +334,7 @@
               "bools": {},
               "ints": {},
               "floats": {
-                "scale_height": 1,
-                "scale_heel": 0
+                "skid": 0
               },
               "vectors": {},
               "rotations": {}
@@ -305,7 +358,7 @@
         ],
         "Children": [
           {
-            "__guid": "2c7fd092-c6c6-4811-9262-308634d2130f",
+            "__guid": "0a97c308-6cd4-4fb4-a043-5017444106a2",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - baseball_cap_blue_white",
@@ -322,7 +375,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "081e9d29-f50d-4044-9b49-0c9dad28b87f",
+                "__guid": "cd16082a-1090-4cdf-9aeb-66dd6c37a4e1",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -374,7 +427,7 @@
             "Children": []
           },
           {
-            "__guid": "0a185be5-d334-4f94-b77b-1f19c01e6b49",
+            "__guid": "406891c6-c337-4999-b15f-662fc20610c2",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - brown_cargo_pants",
@@ -391,7 +444,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "63f666c6-5292-45f5-9429-b9f5af2271da",
+                "__guid": "9c23bdc1-5f09-40be-85bb-691e66f5e53c",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -443,7 +496,7 @@
             "Children": []
           },
           {
-            "__guid": "7702e841-b031-49ad-9f76-af0ade5f2e58",
+            "__guid": "06c68a5b-268e-48fc-9111-6542caac793c",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - boxing_boots",
@@ -460,7 +513,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "9f3c2428-f224-4fe5-b3da-9aa22bf05156",
+                "__guid": "b9980881-e445-4a5a-95b6-69ade912642c",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -512,7 +565,7 @@
             "Children": []
           },
           {
-            "__guid": "7316e480-0426-4079-996c-aa3c2d283ab3",
+            "__guid": "3f0c375a-f0d1-402c-974f-95ea904cca1a",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - tactical_vest_army",
@@ -529,7 +582,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "b104e3a6-7589-4a23-afbe-73fc528ecea2",
+                "__guid": "f45fd327-2730-49d0-bb5e-ac735f9a6034",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
