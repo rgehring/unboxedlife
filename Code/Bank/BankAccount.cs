@@ -10,7 +10,7 @@ public sealed class BankAccount : Component
 	{
 		// Optional: set a starting balance once, host-only.
 		if ( Networking.IsHost && Money == 0 )
-			Money = 0;
+			Money = 10000;
 	}
 
 	public void AddMoney( int amount )

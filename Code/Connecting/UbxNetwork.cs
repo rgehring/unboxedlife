@@ -22,8 +22,6 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 	[Property] public bool StartServer { get; set; } = true;
 	[Property] public GameObject PlayerPrefab { get; set; }
 	private readonly Dictionary<Connection, GameObject> _pawnByConn = new();
-	[Property] public GameObject CryptoMinerPrefab { get; set; }
-	[Property] public int CryptoMinerCost { get; set; } = 100;
 	
 	[Property] public List<ShopItemDef> ShopItems { get; set; } = new();
 	private ShopItemDef FindShopItem( string id )

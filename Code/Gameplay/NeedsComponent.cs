@@ -43,13 +43,24 @@ public sealed class NeedsComponent : Component
 			var health = Components.Get<HealthComponent>();
 			health?.Damage( StarveDamagePerSecond * dt );
 		}
-
-#if DEBUG // for needs testing
-//		if ( Time.Now % 1f < Time.Delta )
-//			Log.Info( $"Needs: Hunger={Hunger:0.0} Thirst={Thirst:0.0}" );
-#endif
-
 	}
+
+	public void AddHunger( float amount )
+	{
+		if ( !Networking.IsHost ) return;
+		if ( amount <= 0 ) return;
+
+		Hunger = MathF.Min( MaxHunger, Hunger + amount );
+	}
+
+	public void AddThirst( float amount )
+	{
+		if ( !Networking.IsHost ) return;
+		if ( amount <= 0 ) return;
+
+		Thirst = MathF.Min( MaxThirst, Thirst + amount );
+	}
+
 
 	public void ResetNeeds()
 	{

@@ -62,18 +62,6 @@
         "OnComponentUpdate": null
       },
       {
-        "__type": "NetworkIdentification",
-        "__guid": "7a975762-f0ef-4e23-a670-de3591d035be",
-        "__enabled": true,
-        "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
         "__type": "UnboxedLife.BankAccount",
         "__guid": "8af94d1e-96bb-4763-bf55-62d09c00aaa1",
         "__enabled": true,
@@ -103,6 +91,35 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "SpawnDistance": 80
+      },
+      {
+        "__type": "UnboxedLife.Interactor",
+        "__guid": "0d5e8eca-1d7c-49dd-b096-eca091814d29",
+        "__enabled": true,
+        "Flags": 0,
+        "DebugDuration": 0.05,
+        "DebugTrace": true,
+        "EyeHeight": 64,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "TraceDistance": 200
+      },
+      {
+        "__type": "UnboxedLife.NetworkIdentification",
+        "__guid": "48d4b443-05cf-4810-9e33-3696e7069a5b",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "TagToApply": "player"
       }
     ],
     "Children": [
