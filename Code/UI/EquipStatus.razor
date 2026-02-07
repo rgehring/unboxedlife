@@ -1,0 +1,42 @@
+@using System.Linq
+@using System
+@using Sandbox
+@using Sandbox.UI
+@using UnboxedLife
+@inherits Panel
+
+@if (_equip is not null)
+{
+    <div class="equip-status">
+        <span>Equipped:</span>
+        <strong>@_equip.ActiveSlot</strong>
+    </div>
+}
+
+@code
+{
+    GameObject _state;
+    EquipComponent _equip;
+
+    void EnsureRefs()
+    {
+        if (_state?.IsValid() == true && _equip?.IsValid() == true)
+            return;
+
+        // Local PlayerState = the state object owned by this connection
+        _state = Scene.GetAllObjects(true)
+            .FirstOrDefault(go =>
+                go.Network?.IsOwner == true &&
+                go.Components.Get<EquipComponent>() != null);
+
+        _equip = _state?.Components.Get<EquipComponent>();
+    }
+
+    protected override int BuildHash()
+    {
+        EnsureRefs();
+
+        // Slot drives redraw
+        return HashCode.Combine((int)(_equip?.ActiveSlot ?? EquipComponent.Slot.Empty));
+    }
+}

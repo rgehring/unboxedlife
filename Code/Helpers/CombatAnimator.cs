@@ -47,6 +47,17 @@ public sealed class CombatAnimator : Component
 		}
 	}
 
+	public void TriggerShoot()
+	{
+		// Use the same “b_attack” trigger you already used for punch
+		var model = AnimHelper?.Target as SkinnedModelRenderer;
+		if ( model is null )
+			return;
+
+		model.Set( "b_attack", true );
+	}
+
+
 	/// <summary>Call to play punch animation immediately.</summary>
 	public void TriggerPunch()
 	{

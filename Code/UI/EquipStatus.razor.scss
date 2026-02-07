@@ -1,0 +1,15 @@
+.equip-status {
+	position: absolute;
+	left: 20px;
+	bottom: 110px; // sits just above BottomLeftVitals
+	font-size: 16px;
+	padding: 6px 10px;
+	border-radius: 6px;
+	background: rgb(0, 0, 0);
+	color: white;
+
+	strong {
+		margin-left: 6px;
+		color: #ffd966;
+	}
+}

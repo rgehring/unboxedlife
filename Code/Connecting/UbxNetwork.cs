@@ -1,8 +1,3 @@
-using System.Collections.Generic;
-using Sandbox;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace UnboxedLife;
 
 /// <summary>
@@ -21,6 +16,10 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 	[Property] public List<GameObject> SpawnPoints { get; set; }
 	[Property] public bool StartServer { get; set; } = true;
 	[Property] public GameObject PlayerPrefab { get; set; }
+	[Property] public GameObject CitizenPrefab { get; set; }
+	[Property] public GameObject PolicePrefab { get; set; }
+	[Property] public GameObject ThiefPrefab { get; set; }
+
 	private readonly Dictionary<Connection, GameObject> _pawnByConn = new();
 	
 	[Property] public List<ShopItemDef> ShopItems { get; set; } = new();
@@ -124,8 +123,18 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 		if ( !PlayerPrefab.IsValid() )
 			return null;
 
-		var startLocation = FindSpawnLocation().WithScale( 1 );
+		var state = GetPlayerStateFor( channel );
+		var job = state?.Components.Get<JobComponent>()?.CurrentJob ?? JobId.Citizen;
 
+		var prefab = job switch
+		{
+			JobId.Police => PolicePrefab,
+			JobId.Thief => ThiefPrefab,
+			_ => CitizenPrefab
+		};
+
+
+		var startLocation = FindSpawnLocation().WithScale( 1 );
 		var player = PlayerPrefab.Clone( startLocation, name: $"[UbxNetwork.cs]Player - {channel.DisplayName}" );
 		player.NetworkMode = NetworkMode.Object;
 		player.NetworkSpawn( channel );

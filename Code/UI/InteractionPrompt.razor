@@ -1,0 +1,33 @@
+@namespace UnboxedLife
+@using Sandbox
+@using Sandbox.UI
+@inherits Panel
+
+
+<root class="interaction-prompt @(Visible ? "show" : "hide")">
+    <div class="bubble">@Text</div>
+    @if (!string.IsNullOrWhiteSpace(Reason))
+    {
+        <div class="reason">@Reason</div>
+    }
+</root>
+
+@code
+{
+    private UbxNetwork Net => Scene.GetAllComponents<UbxNetwork>().FirstOrDefault();
+
+    private Interactor LocalInteractor =>
+        Scene.GetAllComponents<Interactor>()
+            .FirstOrDefault(x => x.GameObject.Network?.IsOwner == true);
+
+    private bool Visible => LocalInteractor?.IsHovering == true;
+    private string Text => LocalInteractor?.HoverPrompt ?? "";
+    
+    // Optional (only if you want to show access denied reason later)
+    private string Reason => ""; // wire this if you expose cached reason from Interactor
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( Visible, Text, Reason );
+    }
+}

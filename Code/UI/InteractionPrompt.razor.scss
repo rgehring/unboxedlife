@@ -1,0 +1,37 @@
+.interaction-prompt {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+
+    &.hide {
+        opacity: 0;
+    }
+
+    &.show {
+        opacity: 1;
+        background: rgb(0 0 0);
+    }
+
+    .bubble {
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .reason {
+        margin-top: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        background: rgba(0,0,0,0.45);
+        color: #ffb3b3;
+        font-size: 14px;
+        text-align: center;
+    }
+}

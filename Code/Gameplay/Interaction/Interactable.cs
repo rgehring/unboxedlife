@@ -1,11 +1,30 @@
 namespace UnboxedLife;
 
+public enum PropertyAction
+{
+	Use,
+	Build,
+	OpenDoor,
+	LockDoor
+}
+
+[Title( "Interactable" )]
 public abstract class Interactable : Component
 {
+	// NEW: security integration (not used yet but will be)
+	[Property] public bool RequirePropertyAccess { get; set; } = false;
+	[Property] public PropertyAction Action { get; set; } = PropertyAction.Use;
+
 	[Property] public string Prompt { get; set; } = "Use";
 
 	// Max distance this interactable can be used from
 	[Property] public float UseDistance { get; set; } = 120f;
+
+	public virtual string GetPrompt( GameObject interactor = null )
+	{
+		return Prompt;
+	}
+
 
 	// Host-only validation gate
 	public virtual bool CanInteract( GameObject interactor )
@@ -13,8 +32,26 @@ public abstract class Interactable : Component
 		if ( interactor is null ) return false;
 
 		var dist = interactor.WorldPosition.Distance( GameObject.WorldPosition );
-		return dist <= UseDistance;
+		if ( dist > UseDistance ) return false;
+
+		if ( !Networking.IsHost ) return false;
+
+		if ( RequirePropertyAccess )
+		{
+			var owner = interactor.Network?.Owner;
+			if ( owner is null ) return false;
+
+			var zone = PropertyZoneRegistry.FindZoneAt( GameObject.WorldPosition );
+			if ( zone is null ) return false; // choose: no zone => deny for secured items
+
+			// access check uses SteamId
+			if ( !zone.HasAccess( owner.SteamId ) )
+				return false;
+		}
+
+		return true;
 	}
+
 
 	// Host performs the action
 	public abstract void Interact( GameObject interactor );

@@ -28,10 +28,15 @@ public sealed class PunchAttack : Component
 		// default S&box binding is usually "attack1"
 		if ( !Input.Pressed( "attack1" ) )
 			return;
+		
+		var equip = Components.Get<EquipComponent>();
+		if ( equip is null || equip.ActiveSlot != EquipComponent.Slot.Fists )
+			return;
 
 		_timeSinceLastPunch = 0f;
 		var pawn = PawnResolver.GetLocalPawn( Scene );
 		pawn?.Components.Get<CombatAnimator>()?.TriggerPunch();
+		pawn?.Components.Get<FistsViewModel>()?.TriggerPunch();
 
 		TryPunchRpc();
 	}

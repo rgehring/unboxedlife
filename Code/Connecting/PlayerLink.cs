@@ -1,5 +1,3 @@
-using Sandbox;
-
 namespace UnboxedLife;
 
 public sealed class PlayerLink : Component
