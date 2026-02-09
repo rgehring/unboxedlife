@@ -5,6 +5,8 @@ public sealed class PropertyZone : Component
 	[Property] public string PropertyId { get; set; }
 	[Property] public string DisplayName { get; set; }
 	[Property] public Collider ZoneCollider { get; set; }
+	[Property] public bool StartsAsGovernment { get; set; } = false;
+	[Sync( SyncFlags.FromHost )] public bool IsGovernment { get; private set; }
 	[Sync( SyncFlags.FromHost )] public SteamId OwnerSteamId { get; private set; }
 	[Sync( SyncFlags.FromHost )] public string OwnerName { get; private set; } = "";
 	[Sync] public bool IsForSale { get; private set; } = true;
@@ -12,12 +14,27 @@ public sealed class PropertyZone : Component
 	[Sync( SyncFlags.FromHost )] public int LastPaidPrice { get; private set; }     // NEW: remember last paid price (host writes; clients can read)
 	private readonly HashSet<SteamId> _allowed = new();     // Host-only list (MVP)
 	public bool IsOwned => OwnerSteamId != default;
-	
+
+
 	protected override void OnDestroy() => PropertyZoneRegistry.Unregister( this );
+	public void SetGovernmentHost( bool isGov )
+	{
+		if ( !Networking.IsHost ) return;
+		IsGovernment = isGov;
+	}
+	public bool HasGovernmentAccess( SteamId steamId, JobId job )
+	{
+		// MVP: Police can access gov property; others cannot
+		return job == JobId.Police;
+	}
+
 	protected override void OnStart()
 	{
 		ZoneCollider ??= Components.Get<Collider>( FindMode.InSelf | FindMode.InChildren );
 		PropertyZoneRegistry.Register( this );
+
+		if ( Networking.IsHost )
+			IsGovernment = StartsAsGovernment;
 	}
 
 	public bool Contains( Vector3 position )

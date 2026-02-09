@@ -16,10 +16,18 @@ public sealed class DoorInteractable : Interactable
 		if ( Door is null )
 			return base.GetPrompt( interactor );
 
+		var lockHint = Door.IsLocked ? "Unlock (Keys)" : "Lock (Keys)";
+
 		return Action switch
 		{
-			PropertyAction.OpenDoor => Door.IsOpen ? "Close" : (Door.IsLocked ? "Locked" : "Open"),
-			PropertyAction.LockDoor => Door.IsLocked ? "Unlock" : "Lock",
+			PropertyAction.OpenDoor =>
+				Door.IsLocked
+					? $"Locked — {lockHint}"
+					: (Door.IsOpen ? $"Close — {lockHint}" : $"Open — {lockHint}"),
+
+			PropertyAction.LockpickDoor =>
+				Door.IsBeingLockpicked ? "Lockpicking..." : "Lockpick",
+
 			_ => base.GetPrompt( interactor )
 		};
 	}
@@ -44,6 +52,43 @@ public sealed class DoorInteractable : Interactable
 
 		var zone = PropertyZoneRegistry.FindZoneAt( GameObject.WorldPosition );
 
+		var state = interactor.Components.Get<PlayerLink>()?.State;
+		var job = state?.Components.Get<JobComponent>()?.CurrentJob ?? JobId.Citizen;
+
+		if ( zone is not null && zone.IsGovernment )
+		{
+			// Police can operate government doors normally.
+			// Lockpicking is allowed for anyone who has the tool.
+			if ( Action == PropertyAction.LockpickDoor )
+			{
+				if ( !Door.IsLocked ) return false;
+				if ( Door.IsBeingLockpicked ) return false;
+
+				var equip = interactor.Components.Get<EquipComponent>();
+				return equip is not null && equip.ActiveSlot == EquipComponent.Slot.Lockpick;
+			}
+
+			if ( job != JobId.Police )
+			{
+				// Non-police cannot open locked doors and cannot lock/unlock gov doors
+				return Action switch
+				{
+					PropertyAction.OpenDoor => !Door.IsLocked,
+					PropertyAction.LockDoor => false,
+					_ => false
+				};
+			}
+
+			// Police path
+			return Action switch
+			{
+				PropertyAction.OpenDoor => !Door.IsLocked,
+				PropertyAction.LockDoor => false,
+				_ => false
+			};
+		}
+
+
 		switch ( Action )
 		{
 			case PropertyAction.OpenDoor:
@@ -51,10 +96,25 @@ public sealed class DoorInteractable : Interactable
 				return !Door.IsLocked;
 
 			case PropertyAction.LockDoor:
-				// Must be inside a property, property must be owned, and caller must have access
+				return false; // keys-only
+
+			case PropertyAction.LockpickDoor:
 				if ( zone is null ) return false;
-				if ( !zone.IsOwned ) return false;          // <- denies lock/unlock on unowned property
-				return zone.HasAccess( owner.SteamId );
+				if ( !Door.IsLocked ) return false;
+				if ( Door.IsBeingLockpicked ) return false;
+				//Optional: police-only area; no lockpicking OR no lockpicking unowned zones
+				//if ( zone.IsGovernment ) return false;     
+				//if ( !zone.IsOwned ) return false;
+
+				// Must have lockpick equipped
+				var equip = interactor.Components.Get<EquipComponent>();
+				if ( equip is null || equip.ActiveSlot != EquipComponent.Slot.Lockpick )
+					return false;
+
+				// Optional: only allow non-owners to lockpick (prevents owner using lockpick pointlessly)
+				// if ( zone.HasAccess( owner.SteamId ) ) return false;
+
+				return true;
 
 			default:
 				return true;
@@ -71,9 +131,11 @@ public sealed class DoorInteractable : Interactable
 				Door.ToggleOpenHost();
 				break;
 
-			case PropertyAction.LockDoor:
-				Door.ToggleLockHost();
+			case PropertyAction.LockpickDoor:
+				// duration can be a property later; start with 5s
+				Door.StartLockpickHost( interactor.Network?.Owner, 5f );
 				break;
+
 		}
 	}
 }

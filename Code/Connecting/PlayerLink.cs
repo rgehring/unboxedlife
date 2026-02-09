@@ -1,8 +1,11 @@
 namespace UnboxedLife;
 
+[Title( "Player Link" ),
+Description( "(PLAYER STATE) Links a player GameObject to their PlayerState " +
+			 "(or similar) for easy access across the codebase." )]
 public sealed class PlayerLink : Component
 {
-	// Host writes these links; everyone reads them.
+
 	[Sync( SyncFlags.FromHost )]
 	public GameObject Player { get; private set; }
 

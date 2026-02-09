@@ -6,6 +6,8 @@ public sealed class Door : Component
 {
 	[Sync( SyncFlags.FromHost )] public bool IsOpen { get; private set; }
 	[Sync( SyncFlags.FromHost )] public bool IsLocked { get; private set; }
+	[Sync( SyncFlags.FromHost )] public bool IsBeingLockpicked { get; private set; }
+	[Sync( SyncFlags.FromHost )] public float LockpickProgress01 { get; private set; }
 
 	[Property] public GameObject DoorPivot { get; set; }
 
@@ -25,6 +27,10 @@ public sealed class Door : Component
 
 	private bool _initialized;
 	private bool _lastIsOpen;
+
+	public string GetLockHint()
+	=> IsLocked ? "Unlock (Keys)" : "Lock (Keys)";
+
 
 	protected override void OnStart()
 	{
@@ -62,6 +68,80 @@ public sealed class Door : Component
 			_t = target;
 
 		DoorPivot.LocalRotation = Rotation.Lerp( _closedLocalRot, _openLocalRot, _t );
+	}
+
+	public bool SetLockedHost( Connection caller, bool locked )
+	{
+		if ( !Networking.IsHost ) return false;
+		if ( caller is null ) return false;
+		if ( IsLocked == locked ) return true;
+
+		var zone = PropertyZoneRegistry.FindZoneAt( WorldPosition );
+		if ( zone is null ) return false;
+
+		// Government zone: Police-only lock/unlock
+		if ( zone.IsGovernment )
+		{
+			// Caller job comes from their PlayerState
+			var pawn = Scene.GetAllObjects( true )
+				.FirstOrDefault( go => go.Network?.Owner == caller && go.Components.Get<Sandbox.PlayerController>() is not null );
+
+			var state = pawn?.Components.Get<PlayerLink>()?.State;
+			var job = state?.Components.Get<JobComponent>()?.CurrentJob ?? JobId.Citizen;
+
+			if ( job != JobId.Police ) return false;
+
+			IsLocked = locked;
+			return true;
+		}
+
+		// Normal property: must be owned and caller must have access
+		if ( !zone.IsOwned )
+			return false;
+
+		if ( !zone.HasAccess( caller.SteamId ) )
+			return false;
+
+		IsLocked = locked;
+		Log.Info( $"[Door] SetLockedHost applied after={IsLocked}" );
+		return true;
+
+	}
+
+	public async void StartLockpickHost( Connection picker, float durationSeconds )
+	{
+		if ( !Networking.IsHost ) return;
+		if ( !IsLocked ) return;
+		if ( IsBeingLockpicked ) return;
+
+		IsBeingLockpicked = true;
+		LockpickProgress01 = 0f;
+
+		try
+		{
+			var start = Time.Now;
+
+			while ( Time.Now - start < durationSeconds )
+			{
+				if ( !GameObject.IsValid() ) return;
+				if ( !IsLocked ) break;
+				if ( picker is null ) break;
+
+				LockpickProgress01 = (float)((Time.Now - start) / durationSeconds);
+				await GameTask.Yield();
+			}
+
+			// Success only if we stayed locked the whole time
+			if ( IsLocked )
+				IsLocked = false;
+			Log.Info( $"[Door] SetLockedHost applied after={IsLocked}" );
+
+		}
+		finally
+		{
+			LockpickProgress01 = 0f;
+			IsBeingLockpicked = false;
+		}
 	}
 
 	public void ToggleOpenHost()

@@ -97,18 +97,6 @@
         "TraceDistance": 200
       },
       {
-        "__type": "UnboxedLife.NetworkIdentification",
-        "__guid": "48d4b443-05cf-4810-9e33-3696e7069a5b",
-        "__enabled": true,
-        "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
         "__type": "UnboxedLife.PunchAttack",
         "__guid": "43d03269-ae35-42e3-a351-c8b1e2291566",
         "__enabled": true,
@@ -160,6 +148,20 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null
+      },
+      {
+        "__type": "UnboxedLife.KeysTool",
+        "__guid": "1693c5bb-5deb-415c-9995-b10ff68800ed",
+        "__enabled": true,
+        "Flags": 0,
+        "EyeHeight": 64,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "TraceDistance": 200
       }
     ],
     "Children": [

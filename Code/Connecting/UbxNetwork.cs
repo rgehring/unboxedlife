@@ -9,26 +9,82 @@ namespace UnboxedLife;
 
 public sealed class UbxNetwork : Component, Component.INetworkListener
 {	
-	/// <summary>
-	/// A list of points to choose from randomly to spawn the player in. If not set, we'll spawn at the
-	/// location of the NetworkHelper object.
-	/// </summary>
 	[Property] public List<GameObject> SpawnPoints { get; set; }
 	[Property] public bool StartServer { get; set; } = true;
-	[Property] public GameObject PlayerPrefab { get; set; }
-	[Property] public GameObject CitizenPrefab { get; set; }
+	[Property] public GameObject CitizenPrefab { get; set; } // what players ALWAYS FIRST spawn in as when joining the server
 	[Property] public GameObject PolicePrefab { get; set; }
 	[Property] public GameObject ThiefPrefab { get; set; }
+	[Property] public GameObject PlayerStatePrefab { get; set; } // a persistent object that holds player-specific data (like money, job, etc) that exists independently of the player's pawn and can persist across respawns
 
+	private readonly Dictionary<Connection, GameObject> _stateByConn = new();
 	private readonly Dictionary<Connection, GameObject> _pawnByConn = new();
-	
 	[Property] public List<ShopItemDef> ShopItems { get; set; } = new();
 	private ShopItemDef FindShopItem( string id )
 		=> ShopItems?.FirstOrDefault( x => x != null && x.Id == id );
 
+
+	public void OnDisconnected( Connection channel )
+	{
+		if ( !Networking.IsHost ) return;
+		if ( channel is null ) return;
+
+		// 1) Pawn
+		if ( _pawnByConn.TryGetValue( channel, out var pawn ) )
+		{
+			_pawnByConn.Remove( channel );
+
+			if ( pawn.IsValid() )
+				pawn.Destroy();
+		}
+
+		// 2) State
+		if ( _stateByConn.TryGetValue( channel, out var state ) )
+		{
+			_stateByConn.Remove( channel );
+
+			if ( state.IsValid() )
+				state.Destroy();
+		}
+
+		Log.Info( $"[UbxNetwork] OnDisconnected cleanup: conn={channel.DisplayName} pawns={_pawnByConn.Count} states={_stateByConn.Count}" );
+	}
+
+
+	private GameObject EnsurePlayerStateFor( Connection channel )
+	{
+		if ( _stateByConn.TryGetValue( channel, out var cached ) && cached.IsValid() )
+			return cached;
+
+		// try existing (linked/search)
+		var existing = GetPlayerStateFor( channel );
+		if ( existing is not null && existing.IsValid() )
+		{
+			_stateByConn[channel] = existing;
+			return existing;
+		}
+
+		if ( !PlayerStatePrefab.IsValid() )
+		{
+			Log.Warning( $"[UbxNetwork] PlayerStatePrefab not set - cannot create PlayerState for {channel.DisplayName}" );
+			return null;
+		}
+
+		var state = PlayerStatePrefab.Clone();
+		state.NetworkMode = NetworkMode.Object;
+
+		// IMPORTANT: assign ownership to that player's connection
+		state.NetworkSpawn( channel ); // owner will be the connection provided
+
+		_stateByConn[channel] = state;
+		Log.Info( $"[UbxNetwork] State spawned: conn={channel.DisplayName} stateId={state.Id} owner={state.Network?.OwnerId}" );
+
+		return state;
+
+	}
+
 	private BankAccount GetBankAccountFor( Connection channel )
 	{
-		var state = GetPlayerStateFor( channel );
+		var state = EnsurePlayerStateFor( channel );
 		return state?.Components.Get<BankAccount>();
 	}
 
@@ -100,30 +156,31 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 	{
 		if ( !Networking.IsHost ) return;
 
-		Log.Info( $"[UbxNetwork.cs]Player '{channel.DisplayName}' has joined the game" );
+		Log.Info( $"'{channel.DisplayName}' has joined the game" );
+
+		var state = EnsurePlayerStateFor( channel );
+		if ( state is null ) return;
 
 		var pawn = SpawnPlayerFor( channel );
-		if ( pawn is null )
-			return;
+		if ( pawn is null ) return;
 
-		var state = GetPlayerStateFor( channel );
-		if ( state is not null )
-		{
-			LinkPawnAndState( pawn, state );
-		}
-		// else: PlayerStateSpawner will create it shortly and link from its side
+		LinkPawnAndState( pawn, state );
+		Log.Info( $"[UbxNetwork] OnActive done: conn={channel.DisplayName} pawns={_pawnByConn.Count} states={_stateByConn.Count}" );
+
 	}
-
 
 	private GameObject SpawnPlayerFor( Connection channel )
 	{
 		if ( !Networking.IsHost )
 			return null;
 
-		if ( !PlayerPrefab.IsValid() )
-			return null;
+		if ( _pawnByConn.TryGetValue( channel, out var existing ) && existing.IsValid() )
+		{
+			Log.Warning( $"[Spawn] prevented double-spawn for {channel.DisplayName}. Existing pawn={existing.Id}" );
+			return existing;
+		}
 
-		var state = GetPlayerStateFor( channel );
+		var state = EnsurePlayerStateFor( channel );
 		var job = state?.Components.Get<JobComponent>()?.CurrentJob ?? JobId.Citizen;
 
 		var prefab = job switch
@@ -133,17 +190,37 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 			_ => CitizenPrefab
 		};
 
+		if ( !prefab.IsValid() )
+			return null;
 
 		var startLocation = FindSpawnLocation().WithScale( 1 );
-		var player = PlayerPrefab.Clone( startLocation, name: $"[UbxNetwork.cs]Player - {channel.DisplayName}" );
+
+		var player = prefab.Clone( startLocation, name: $"PrefabType:{prefab} | DisplayName:{channel.DisplayName}" );
 		player.NetworkMode = NetworkMode.Object;
 		player.NetworkSpawn( channel );
-		Log.Info( $"[Spawn] pawn id={player.Id} name={player.Name} owner={player.Network?.OwnerId}" );
+
+		Log.Info( $"[Spawn] pawn id={player.Id} name={player.Name} owner={player.Network?.OwnerId} job={job}" );
 
 		_pawnByConn[channel] = player;
+		Log.Info( $"[UbxNetwork] Pawn spawned: conn={channel.DisplayName} pawnId={player.Id} owner={player.Network?.OwnerId}" );
+
 		return player;
 	}
 
+	public void SetJobAndRespawn( Connection channel, JobId job )
+	{
+		if ( !Networking.IsHost ) return;
+
+		var state = EnsurePlayerStateFor( channel );
+		if ( state is null ) return;
+
+		var jobComp = state.Components.Get<JobComponent>();
+		if ( jobComp is null ) return;
+		if ( jobComp.CurrentJob == job ) return;
+
+		jobComp.SetJobHost( job );
+		Respawn( channel );
+	}
 
 	/// <summary>
 	/// Host only - Respawn the player for the given connection
@@ -152,33 +229,43 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 	{
 		if ( !Networking.IsHost ) return;
 
-		var state = GetPlayerStateFor( channel );
+		var state = EnsurePlayerStateFor( channel );
 		if ( state is null )
 		{
-			Log.Warning( $"[Respawn] No PlayerState found for {channel.DisplayName} ({channel.SteamId})" );
+			Log.Warning( $"[Respawn] No PlayerState for {channel.DisplayName} ({channel.SteamId})" );
 			return;
 		}
 
-		if ( _pawnByConn.TryGetValue( channel, out var oldPawn ) )
-		{
-			if ( oldPawn.IsValid() )
-				Log.Info( $"[Respawn] destroying pawn id={oldPawn.Id} name={oldPawn.Name} owner={oldPawn.Network?.OwnerId}" );
-			
-			oldPawn.Destroy();
+		_pawnByConn.TryGetValue( channel, out var oldPawn );
 
-			_pawnByConn.Remove( channel ); // remove stale ref either way
+		if ( oldPawn is not null && oldPawn.IsValid() )
+		{
+			Log.Info( $"[Respawn] destroying pawn id={oldPawn.Id} name={oldPawn.Name} owner={oldPawn.Network?.OwnerId}" );
+			oldPawn.Destroy();
 		}
+
+		_pawnByConn.Remove( channel );
 
 		var newPawn = SpawnPlayerFor( channel );
-		if ( newPawn is null )
-			return;
+		if ( newPawn is null ) return;
 
 		LinkPawnAndState( newPawn, state );
+		Log.Info( $"[UbxNetwork] Respawn done: conn={channel.DisplayName} pawns={_pawnByConn.Count} states={_stateByConn.Count}" );
+
 	}
 
-
-	private GameObject GetPlayerStateFor( Connection channel )
+	private GameObject GetPlayerStateFor( Connection channel, GameObject knownPawn = null )
 	{
+		// Best: if we have a pawn, use the link
+		var linked = knownPawn?.Components.Get<PlayerLink>()?.State;
+		if ( linked is not null && linked.IsValid() )
+			return linked;
+
+		// Next best: cache
+		if ( _stateByConn.TryGetValue( channel, out var cached ) && cached.IsValid() )
+			return cached;
+
+		// Fallback: scene search
 		return Scene.GetAllObjects( true )
 			.FirstOrDefault( go =>
 				go.Network?.Owner == channel &&

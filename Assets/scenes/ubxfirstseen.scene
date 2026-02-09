@@ -144,15 +144,23 @@
           "__guid": "25125ef2-ca47-4ff7-b4bb-41d377ee63e2",
           "__enabled": true,
           "Flags": 0,
+          "CitizenPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/rpplayer/citizen.prefab"
+          },
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "PlayerPrefab": {
+          "PlayerStatePrefab": {
             "_type": "gameobject",
-            "prefab": "prefabs/rpplayer/player.prefab"
+            "prefab": "prefabs/playerstateprefab.prefab"
+          },
+          "PolicePrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/playerjobtype/policeofficer.prefab"
           },
           "ShopItems": [
             {
@@ -204,7 +212,11 @@
               "go": "650113fb-9859-44ac-9cda-635865358561"
             }
           ],
-          "StartServer": true
+          "StartServer": true,
+          "ThiefPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/playerjobtype/thief.prefab"
+          }
         },
         {
           "__type": "UnboxedLife.PropertyService",
@@ -355,37 +367,7 @@
       "__version": 2,
       "__Prefab": "prefabs/playerstatespawner.prefab",
       "__PrefabInstancePatch": {
-        "AddedObjects": [
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "be25475a-3b1c-442f-abac-7ef99cffb11f"
-            },
-            "Parent": {
-              "Type": "GameObject",
-              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
-            },
-            "PreviousElement": null,
-            "ContainerProperty": "Components",
-            "IsContainerArray": true,
-            "Data": {
-              "__type": "UnboxedLife.PlayerStateSpawner",
-              "__guid": "be25475a-3b1c-442f-abac-7ef99cffb11f",
-              "__enabled": true,
-              "Flags": 0,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "PlayerStatePrefab": {
-                "_type": "gameobject",
-                "prefab": "prefabs/playerstateprefab.prefab"
-              }
-            }
-          }
-        ],
+        "AddedObjects": [],
         "RemovedObjects": [
           {
             "Id": {
@@ -410,13 +392,21 @@
             },
             "Property": "Position",
             "Value": "482.4919,49.41031,457.1652"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "e55a8ec0-8739-4d1d-bd70-413c97687196"
+            },
+            "Property": "Enabled",
+            "Value": false
           }
         ],
         "MovedObjects": []
       },
       "__PrefabIdToInstanceId": {
         "e55a8ec0-8739-4d1d-bd70-413c97687196": "dd53e492-c5d5-4330-8b1e-02ac872f1b3c",
-        "30c8d8ac-18ed-4ad3-9153-adff9c3e3109": "ca54fc6b-4d41-47ce-971b-c2a6323a6829"
+        "2df8038f-b2df-4dda-ac66-fdccb1b9d823": "2292358d-43ca-4756-8174-2feed3fe32a9"
       }
     },
     {
@@ -490,7 +480,7 @@
         "391822bd-0f2b-42da-b417-bf934fc6a2af": "295077f3-578c-457f-acb3-720710516758",
         "22cc0fec-9648-4d1a-b55f-83b54f383d47": "4eb11af7-8394-46f2-83c9-d5954143df1a",
         "5509e661-6560-485e-9fe6-9d97db63864f": "57e24631-ce4c-4411-aa9d-84e08f9374b7",
-        "985f6010-9ad6-4335-9029-ffaef32abaf2": "47546411-51b4-490f-b702-fe33fcc8cc56"
+        "523afeb8-5bd6-4b81-876d-901ba266f38c": "efe58d7d-c775-4a2c-9b08-d43e64027e56"
       }
     },
     {
@@ -678,6 +668,159 @@
             }
           ],
           "Children": []
+        },
+        {
+          "__guid": "3b57b2b5-3b46-419a-8fa5-4ea355701f25",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "DoorRoot (2)",
+          "Position": "78.48059,-315.0445,6.030273",
+          "Rotation": "0,0,0.7071068,0.7071068",
+          "Scale": "1.060707,2.212175,1.060707",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 1,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 1,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "UnboxedLife.Door",
+              "__guid": "c7e68aa2-4964-4a02-aba3-2d4baac63561",
+              "__enabled": true,
+              "Flags": 0,
+              "CloseSound": "sound/hl2_door_soft_close.sound",
+              "DoorPivot": {
+                "_type": "gameobject",
+                "go": "36b20e02-d434-433c-a8c1-ee49f4f2186e"
+              },
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OpenSound": "sound/hl2_door_open.sound",
+              "OpenSpeed": 3,
+              "OpenYawDegrees": 90
+            },
+            {
+              "__type": "UnboxedLife.DoorInteractable",
+              "__guid": "baa67f81-4cf1-4ebf-af4c-14b86f43dd5e",
+              "__enabled": true,
+              "Flags": 0,
+              "Action": "OpenDoor",
+              "Door": {
+                "_type": "component",
+                "component_id": "c7e68aa2-4964-4a02-aba3-2d4baac63561",
+                "go": "3b57b2b5-3b46-419a-8fa5-4ea355701f25",
+                "component_type": "Door"
+              },
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Prompt": "",
+              "RequirePropertyAccess": false,
+              "UseDistance": 120
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "36b20e02-d434-433c-a8c1-ee49f4f2186e",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "DoorPivot",
+              "Position": "-0.002416762,-3.544901,-22.98925",
+              "Rotation": "0,0,0,1",
+              "Scale": "1.149963,1.149963,1.155224",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "8cf9fa1d-1432-473c-b674-f47ae9fb18ee",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "LodOverride": null,
+                  "MaterialGroup": null,
+                  "MaterialOverride": null,
+                  "Materials": null,
+                  "Model": "models/props_doors/door01_left.vmdl",
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                }
+              ],
+              "Children": [
+                {
+                  "__guid": "f9aa8cfd-eb89-4af9-b96c-639acff33590",
+                  "__version": 2,
+                  "Flags": 0,
+                  "Name": "DoorMesh",
+                  "Position": "0,0.00000000003215628,-0.5087866",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "2.022082,1.025799,0.9762026",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.ModelCollider",
+                      "__guid": "b9f97b43-b253-4e8b-a2b4-4de2b220f702",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "ColliderFlags": 0,
+                      "Elasticity": null,
+                      "Friction": null,
+                      "IsTrigger": false,
+                      "Model": "models/props_doors/door01_left.vmdl",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OnObjectTriggerEnter": null,
+                      "OnObjectTriggerExit": null,
+                      "OnTriggerEnter": null,
+                      "OnTriggerExit": null,
+                      "RollingResistance": null,
+                      "Static": false,
+                      "Surface": null,
+                      "SurfaceVelocity": "0,0,0"
+                    }
+                  ],
+                  "Children": []
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -727,6 +870,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "PropertyId": "001",
+              "StartsAsGovernment": true,
               "ZoneCollider": {
                 "_type": "component",
                 "component_id": "487335a7-39f4-4c42-bdbe-45c8ab2e85f0",
@@ -739,7 +883,7 @@
               "__guid": "487335a7-39f4-4c42-bdbe-45c8ab2e85f0",
               "__enabled": true,
               "Flags": 0,
-              "Center": "58.87437,-11.70627,63.97024",
+              "Center": "58.87437,-17.23865,63.97024",
               "ColliderFlags": "IgnoreMass",
               "Elasticity": null,
               "Friction": null,
@@ -755,7 +899,7 @@
               "OnTriggerEnter": null,
               "OnTriggerExit": null,
               "RollingResistance": null,
-              "Scale": "315.452,621.9289,210.0982",
+              "Scale": "315.452,632.9937,210.0982",
               "Static": false,
               "Surface": null,
               "SurfaceVelocity": "0,0,0"
@@ -886,7 +1030,7 @@
           "Name": "ZoneVolume",
           "Position": "-152.3468,132.5381,76.96857",
           "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
+          "Scale": "1.091364,1,1",
           "Tags": "",
           "Enabled": true,
           "NetworkMode": 1,
@@ -908,6 +1052,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "PropertyId": "001",
+              "StartsAsGovernment": false,
               "ZoneCollider": {
                 "_type": "component",
                 "component_id": "d85de6c1-350e-4488-85ad-913119d9d61d",
@@ -1202,8 +1347,8 @@
       "__version": 2,
       "Flags": 0,
       "Name": "DoorRoot (1)",
-      "Position": "-625.9724,250.0355,491.4888",
-      "Rotation": "-0.00000000003145705,0,0,1",
+      "Position": "-625.9724,246.3427,461.8104",
+      "Rotation": "0,0,0,1",
       "Scale": "1.060707,1.060707,1.060707",
       "Tags": "",
       "Enabled": true,
@@ -1239,12 +1384,7 @@
           "__enabled": true,
           "Flags": 0,
           "Action": "OpenDoor",
-          "Door": {
-            "_type": "component",
-            "component_id": "ddb37ad7-66d4-4ba1-93e6-0ce098bd59c0",
-            "go": "4a40be0e-26c1-4c0d-9ad3-fea7c06a8777",
-            "component_type": "Door"
-          },
+          "Door": null,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -1262,7 +1402,7 @@
           "__version": 2,
           "Flags": 0,
           "Name": "DoorPivot",
-          "Position": "-0.002416762,-3.544901,-22.98925",
+          "Position": "0,0,0",
           "Rotation": "0,0,0,1",
           "Scale": "1.149963,1.149963,1.155224",
           "Tags": "",
@@ -1272,44 +1412,16 @@
           "NetworkOrphaned": 0,
           "NetworkTransmit": true,
           "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "7d23a66c-bac8-4cfb-b207-7afa55843fe2",
-              "__enabled": true,
-              "Flags": 0,
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "LodOverride": null,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/props_doors/door01_left.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ],
+          "Components": [],
           "Children": [
             {
               "__guid": "db5e2b96-d6ca-49f2-8172-114182c563d2",
               "__version": 2,
               "Flags": 0,
               "Name": "DoorMesh",
-              "Position": "0,0.00000000003215628,-0.5087866",
+              "Position": "0,0,0",
               "Rotation": "0,0,0,1",
-              "Scale": "2.022082,1.025799,0.9762026",
+              "Scale": "0.4138677,1.025799,1.030081",
               "Tags": "",
               "Enabled": true,
               "NetworkMode": 2,
@@ -1319,15 +1431,15 @@
               "OwnerTransfer": 1,
               "Components": [
                 {
-                  "__type": "Sandbox.ModelCollider",
-                  "__guid": "ce66830a-235e-4ffa-a5e0-6c7bf75c35b9",
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "9940a3ef-60bf-4e32-a7ef-32bade4c5e42",
                   "__enabled": true,
                   "Flags": 0,
+                  "Center": "3.374442,18.22275,48.13796",
                   "ColliderFlags": 0,
                   "Elasticity": null,
                   "Friction": null,
                   "IsTrigger": false,
-                  "Model": "models/props_doors/door01_left.vmdl",
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -1339,9 +1451,37 @@
                   "OnTriggerEnter": null,
                   "OnTriggerExit": null,
                   "RollingResistance": null,
+                  "Scale": "17.47012,44.28496,90.87943",
                   "Static": false,
                   "Surface": null,
                   "SurfaceVelocity": "0,0,0"
+                },
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "47c9b6e5-c808-410a-ae8a-b515209b2653",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "LodOverride": null,
+                  "MaterialGroup": null,
+                  "MaterialOverride": null,
+                  "Materials": null,
+                  "Model": "models/props_doors/door01_left.vmdl",
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
                 }
               ],
               "Children": []
@@ -1355,14 +1495,14 @@
       "__version": 2,
       "Flags": 0,
       "Name": "JobTerminalTest",
-      "Position": "-343.128,-263.3309,538.4923",
+      "Position": "-416.4052,-207.5763,481.4658",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
+      "NetworkOrphaned": 1,
       "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [
@@ -1391,7 +1531,228 @@
             "AfterUILayer": false
           },
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "0.06434,0,0.38605,1"
+        },
+        {
+          "__type": "UnboxedLife.JobTerminalInteractable",
+          "__guid": "3c6d891d-60ee-4b0e-868a-2e9d491948aa",
+          "__enabled": true,
+          "Flags": 0,
+          "Action": "Use",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Prompt": "",
+          "RequirePropertyAccess": false,
+          "SetJobTo": "Police",
+          "UseDistance": 120
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "6c4942a0-70ec-4cb6-9710-ebf100fccabf",
+          "__enabled": true,
+          "Flags": 0,
+          "Center": "0,0,0",
+          "ColliderFlags": 0,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "2b62ff47-6975-4874-aa75-42c515395421",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "JobTerminalTest (1)",
+      "Position": "-350.9814,-207.5763,481.4658",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 1,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "240f1574-0ba2-41da-97d5-edfd2961a60c",
+          "__enabled": true,
+          "Flags": 0,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.38605,0,0,1"
+        },
+        {
+          "__type": "UnboxedLife.JobTerminalInteractable",
+          "__guid": "b9599f61-1552-4248-aa1f-54e536f3f208",
+          "__enabled": true,
+          "Flags": 0,
+          "Action": "Use",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Prompt": "",
+          "RequirePropertyAccess": false,
+          "SetJobTo": "Thief",
+          "UseDistance": 120
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "defadd3c-1e66-470d-94f3-f6c069ea8c20",
+          "__enabled": true,
+          "Flags": 0,
+          "Center": "0,0,0",
+          "ColliderFlags": 0,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "fde9741e-1d1d-45bb-88a0-21f952895972",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "JobTerminalTest (2)",
+      "Position": "-282.2616,-207.5763,481.4658",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 1,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ModelRenderer",
+          "__guid": "be1974fc-9e5f-4f4a-aea6-3b1ce8567be7",
+          "__enabled": true,
+          "Flags": 0,
+          "BodyGroups": 18446744073709551615,
+          "CreateAttachments": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/dev/box.vmdl",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Tint": "0.11667,1,0,1"
+        },
+        {
+          "__type": "UnboxedLife.JobTerminalInteractable",
+          "__guid": "20e58633-3929-402f-a67d-00224e45ee95",
+          "__enabled": true,
+          "Flags": 0,
+          "Action": "Use",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Prompt": "",
+          "RequirePropertyAccess": false,
+          "SetJobTo": "Citizen",
+          "UseDistance": 120
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "b7c80644-3774-4a4b-b42e-838fdb884548",
+          "__enabled": true,
+          "Flags": 0,
+          "Center": "0,0,0",
+          "ColliderFlags": 0,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50,50",
+          "Static": false,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
         }
       ],
       "Children": []

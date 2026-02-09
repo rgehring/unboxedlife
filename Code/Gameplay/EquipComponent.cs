@@ -6,7 +6,9 @@ public sealed class EquipComponent : Component
 	{
 		Empty = 0,
 		Fists = 1,
-		Pistol = 2
+		Pistol = 2,
+		Lockpick = 3,
+		Keys = 4
 	}
 
 
@@ -36,8 +38,9 @@ public sealed class EquipComponent : Component
 		if ( GameObject.Network?.Owner != Rpc.Caller )
 			return;
 
-		var next = ((int)ActiveSlot + dir) % 3;
-		if ( next < 0 ) next += 3;
+		var next = ((int)ActiveSlot + dir) % 5;
+		if ( next < 0 ) next += 5;
+
 
 		ActiveSlot = (Slot)next;
 	}

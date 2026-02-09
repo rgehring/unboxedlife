@@ -5,7 +5,8 @@ public enum PropertyAction
 	Use,
 	Build,
 	OpenDoor,
-	LockDoor
+	LockDoor,
+	LockpickDoor
 }
 
 [Title( "Interactable" )]

@@ -9,18 +9,15 @@ public sealed class DebugTool : Component
 
 	protected override void OnUpdate()
 	{
-		// Run only on the owning client (works whether this component is on pawn or PlayerState)
 		if ( GameObject.Network?.IsOwner != true )
 			return;
 
 		if ( !Input.Pressed( "F" ) )
 			return;
 
-		// Always target the actual pawn (your project marks it with NetworkIdentification)
-		var pawn = Scene.GetAllObjects( true )
-			.FirstOrDefault( go =>
-				go.Network?.IsOwner == true &&
-				go.Components.Get<NetworkIdentification>() != null );
+		// Find the locally-owned pawn (works across respawns)
+		var pawn = PawnResolver.GetLocalPawn( Scene );
+
 
 		if ( pawn is null )
 		{
