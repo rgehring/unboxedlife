@@ -81,7 +81,7 @@ public sealed class KeysTool : Component
 			return;
 		}
 
-		var door = tr.GameObject?.Components.Get<Door>( FindMode.InSelf );
+		var door = tr.GameObject?.Components.Get<Door>( FindMode.InSelf | FindMode.InAncestors );
 		if ( door is null )
 		{
 			Log.Info( $"[KeysTool] Trace hit {tr.GameObject?.Name} but no Door found in ancestors" );

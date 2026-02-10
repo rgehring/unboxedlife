@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
+using UnboxedLife;
 
 public sealed class GameHud : PanelComponent
 {

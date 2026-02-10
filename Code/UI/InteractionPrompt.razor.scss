@@ -15,22 +15,26 @@
     }
 
     .bubble {
-        padding: 8px 12px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 6px 8px;
         border-radius: 6px;
-        background: rgba(0,0,0,0.6);
+        background-color: dimgrey;
         color: white;
-        font-weight: 600;
-        font-size: 18px;
-        text-align: center;
-        white-space: nowrap;
+        font-family: sans-serif;
+        font-size: 14px;
     }
 
     .reason {
         margin-top: 6px;
         padding: 6px 10px;
         border-radius: 6px;
-        background: rgba(0,0,0,0.45);
-        color: #ffb3b3;
+        //background: center;
+        color: #00ffff;
         font-size: 14px;
         text-align: center;
     }

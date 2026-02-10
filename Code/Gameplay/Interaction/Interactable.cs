@@ -26,6 +26,13 @@ public abstract class Interactable : Component
 		return Prompt;
 	}
 
+	public virtual bool CanPreview( GameObject interactor )
+	{
+		// UI-only. Must not rely on host-only state.
+		// Default: show prompt if you're in range & (optionally) access checks pass via cached RPC.
+		return true;
+	}
+
 
 	// Host-only validation gate
 	public virtual bool CanInteract( GameObject interactor )

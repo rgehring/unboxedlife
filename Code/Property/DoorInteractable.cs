@@ -5,6 +5,39 @@ namespace UnboxedLife;
 public sealed class DoorInteractable : Interactable
 {
 	[Property] public Door Door { get; set; }
+	private static GameObject GetState( GameObject interactor )
+	=> interactor?.Components.Get<PlayerLink>()?.State;
+
+	private static EquipComponent GetEquip( GameObject interactor )
+		=> GetState( interactor )?.Components.Get<EquipComponent>( FindMode.InSelf | FindMode.InChildren );
+
+	private static JobId GetJob( GameObject interactor )
+		=> GetState( interactor )?.Components.Get<JobComponent>()?.CurrentJob ?? JobId.Citizen;
+
+
+	public override bool CanPreview( GameObject interactor )
+	{
+		if ( interactor is null ) return false;
+		if ( Door is null ) return false;
+
+		var equip = GetEquip( interactor );
+
+		return Action switch
+		{
+			PropertyAction.LockpickDoor =>
+				Door.IsLocked &&
+				!Door.IsBeingLockpicked &&
+				equip is not null &&
+				equip.ActiveSlot == EquipComponent.Slot.Lockpick,
+
+			PropertyAction.OpenDoor =>
+				// If locked: only show OpenDoor when holding keys (so it can say "Unlock (Keys)")
+				(!Door.IsLocked) ||
+				(equip is not null && equip.ActiveSlot == EquipComponent.Slot.Keys),
+
+			_ => true
+		};
+	}
 
 	protected override void OnStart()
 	{
@@ -35,6 +68,11 @@ public sealed class DoorInteractable : Interactable
 
 	public override bool CanInteract( GameObject interactor )
 	{
+		if ( Action == PropertyAction.LockpickDoor )
+		{
+			Log.Info( $"[Lockpick][HOST][CanInteract] interactor={interactor.Name} door={(Door?.GameObject?.Name ?? "null")} interactGO={GameObject.Name}" );
+		}
+
 		if ( interactor is null ) return false;
 
 		// distance check
@@ -50,10 +88,11 @@ public sealed class DoorInteractable : Interactable
 		var owner = interactor.Network?.Owner;
 		if ( owner is null ) return false;
 
-		var zone = PropertyZoneRegistry.FindZoneAt( GameObject.WorldPosition );
+		var zonePos = (Door?.DoorPivot?.IsValid() ?? false) ? Door.DoorPivot.WorldPosition : Door.WorldPosition;
+		var zone = PropertyZoneRegistry.FindZoneAt( zonePos );
 
-		var state = interactor.Components.Get<PlayerLink>()?.State;
-		var job = state?.Components.Get<JobComponent>()?.CurrentJob ?? JobId.Citizen;
+		var job = GetJob( interactor );
+
 
 		if ( zone is not null && zone.IsGovernment )
 		{
@@ -61,12 +100,43 @@ public sealed class DoorInteractable : Interactable
 			// Lockpicking is allowed for anyone who has the tool.
 			if ( Action == PropertyAction.LockpickDoor )
 			{
-				if ( !Door.IsLocked ) return false;
-				if ( Door.IsBeingLockpicked ) return false;
+				if ( Door is null )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: Door null" );
+					return false;
+				}
 
-				var equip = interactor.Components.Get<EquipComponent>();
-				return equip is not null && equip.ActiveSlot == EquipComponent.Slot.Lockpick;
+				if ( !Door.IsLocked )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: Door not locked" );
+					return false;
+				}
+
+				if ( Door.IsBeingLockpicked )
+				{
+
+					//Log.Info( $"[Lockpick][HOST][CanInteract] DENY: Already being lockpicked" );
+					// allow "Use" again only for the same lockpicker
+					return owner.SteamId == Door.LockpickerSteamId;
+				}
+
+				var equip = GetEquip( interactor );
+				if ( equip is null )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: No EquipComponent" );
+					return false;
+				}
+
+				if ( equip.ActiveSlot != EquipComponent.Slot.Lockpick )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: Not holding lockpick slot={equip.ActiveSlot}" );
+					return false;
+				}
+
+				Log.Info( $"[Lockpick][HOST][CanInteract] ALLOW (gov). slot={equip.ActiveSlot}" );
+				return true;
 			}
+
 
 			if ( job != JobId.Police )
 			{
@@ -99,22 +169,34 @@ public sealed class DoorInteractable : Interactable
 				return false; // keys-only
 
 			case PropertyAction.LockpickDoor:
-				if ( zone is null ) return false;
-				if ( !Door.IsLocked ) return false;
-				if ( Door.IsBeingLockpicked ) return false;
-				//Optional: police-only area; no lockpicking OR no lockpicking unowned zones
-				//if ( zone.IsGovernment ) return false;     
-				//if ( !zone.IsOwned ) return false;
-
-				// Must have lockpick equipped
-				var equip = interactor.Components.Get<EquipComponent>();
-				if ( equip is null || equip.ActiveSlot != EquipComponent.Slot.Lockpick )
+				if ( zone is null )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: zone null at pos={GameObject.WorldPosition}" );
 					return false;
+				}
 
-				// Optional: only allow non-owners to lockpick (prevents owner using lockpick pointlessly)
-				// if ( zone.HasAccess( owner.SteamId ) ) return false;
+				if ( !Door.IsLocked )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: Door not locked" );
+					return false;
+				}
 
+				if ( Door.IsBeingLockpicked )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: Already being lockpicked" );
+					return false;
+				}
+
+				var equip = GetEquip(interactor);
+				if ( equip is null || equip.ActiveSlot != EquipComponent.Slot.Lockpick )
+				{
+					Log.Info( $"[Lockpick][HOST][CanInteract] DENY: must equip lockpick. equip={(equip is null ? "null" : equip.ActiveSlot.ToString())}" );
+					return false;
+				}
+
+				Log.Info( $"[Lockpick][HOST][CanInteract] ALLOW (non-gov). zone={(zone?.PropertyId ?? "null")}" );
 				return true;
+
 
 			default:
 				return true;
@@ -132,10 +214,20 @@ public sealed class DoorInteractable : Interactable
 				break;
 
 			case PropertyAction.LockpickDoor:
-				// duration can be a property later; start with 5s
-				Door.StartLockpickHost( interactor.Network?.Owner, 5f );
-				break;
+				{
+					var conn = interactor.Network?.Owner;
+					if ( conn is null ) return;
 
+					if ( Door.IsBeingLockpicked )
+					{
+						Door.CancelLockpickHost( conn );
+					}
+					else
+					{
+						Door.StartLockpickHost( conn, 10f );
+					}
+					break;
+				}
 		}
 	}
 }

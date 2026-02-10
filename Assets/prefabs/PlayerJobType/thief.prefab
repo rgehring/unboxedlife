@@ -336,7 +336,7 @@
         ],
         "Children": [
           {
-            "__guid": "2f8fce80-ffea-474d-bcd4-98752c953aa2",
+            "__guid": "dda61c26-ed31-4503-a03c-bdeff94b36fc",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - balaclava",
@@ -353,7 +353,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "700857be-e7c8-4515-8759-1357f278d60e",
+                "__guid": "bcbbbce6-e686-44e1-9e0c-f46711cf3858",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -405,7 +405,7 @@
             "Children": []
           },
           {
-            "__guid": "c16dfe22-eb08-42a8-a366-988fda9c8490",
+            "__guid": "479dd11d-3997-4e47-b9bd-41cd9d505b21",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - trackie_bottoms_black",
@@ -422,7 +422,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "5b6badf8-364a-4ca7-b312-9556a1f1a25d",
+                "__guid": "31de85d8-563f-437d-af70-c64d45b9f469",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -474,7 +474,7 @@
             "Children": []
           },
           {
-            "__guid": "42aad60a-4e43-4923-8c28-34dcb0589fbf",
+            "__guid": "d5a41d63-d423-4d56-916f-d64621016905",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - rubber_gloves_black",
@@ -491,7 +491,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "58291cc8-6815-4f96-ab32-b7c941bf31e3",
+                "__guid": "ab1107b4-2f8a-434d-8c24-7f6031df84ae",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -543,7 +543,7 @@
             "Children": []
           },
           {
-            "__guid": "a5aabbd5-c8db-49aa-a9e1-00167458b23c",
+            "__guid": "2dccdd50-8ab0-40e7-a24c-8434ed4ef576",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - polo_shirt_white",
@@ -560,7 +560,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "962fd7a6-8433-48f1-a6e9-9513554e28bc",
+                "__guid": "6ca6fe50-6747-4f9e-af42-6a2dc2b82d62",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

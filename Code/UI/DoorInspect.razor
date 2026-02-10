@@ -1,0 +1,117 @@
+@using Sandbox
+@using Sandbox.UI
+@using System
+@using System.Linq
+@inherits Panel
+@namespace UnboxedLife
+
+<root class="door-inspect @(Visible ? "show" : "hide")">
+    <div class="row"><span class="label">Owner:</span> <span class="value">@OwnerText</span></div>
+    <div class="row"><span class="label">Status:</span> <span class="value">@StatusText</span></div>
+    <div class="row"><span class="label">Property:</span> <span class="value">@PropertyText</span></div>
+    <div class="row"><span class="label">Actions:</span> <span class="value">@AvailableActionsText</span></div>
+
+    @if (Door?.IsBeingLockpicked == true /* && Door.LockpickerSteamId == LocalSteamId */)
+    {
+        <div class="lockpick-bar">
+            <div class="fill" style="width:@($"{Door.LockpickProgress01 * 100f:0}%")"></div>
+        </div>
+    }
+
+    @if (CanUpgrade)
+    {
+        <div class="row hint">(Hold E to upgrade — coming soon)</div>
+    }
+
+
+</root>
+
+@code
+{
+    private Interactor LocalInteractor =>
+        Scene.GetAllComponents<Interactor>()
+            .FirstOrDefault(x => x.GameObject.Network?.IsOwner == true);
+    private Door Door => LocalInteractor?.HoverDoor;
+    private PropertyZone Zone => LocalInteractor?.HoverZone;
+
+    private bool CanUpgrade =>
+    Door is not null &&
+    Zone?.IsOwned == true &&
+    !Zone.IsGovernment;
+
+    private EquipComponent.Slot ActiveSlot
+    {
+        get
+        {
+            var pawn = PawnResolver.GetLocalPawn(Scene);
+            var equip = pawn?.Components.Get<EquipComponent>(FindMode.InSelf | FindMode.InChildren);
+            return equip?.ActiveSlot ?? EquipComponent.Slot.Empty;
+        }
+    }
+
+    private bool HoldingKeys => ActiveSlot == EquipComponent.Slot.Keys;
+    private bool HoldingLockpick => ActiveSlot == EquipComponent.Slot.Lockpick;
+
+    private bool Visible => Door is not null;
+
+    private string PropertyText => Zone?.DisplayName ?? "—";
+    private string StatusText => Door is null ? "" : (Door.IsLocked ? "Locked" : "Unlocked");
+
+    private string OwnerText
+    {
+        get
+        {
+            if (Door is null) return "";
+            if (Zone is null) return "Unknown";
+            if (Zone.IsGovernment) return "Government Only";
+            if (!Zone.IsOwned) return "Unowned";
+            return !string.IsNullOrWhiteSpace(Zone.OwnerName) ? Zone.OwnerName : "Owned";
+        }
+    }
+
+    private string AvailableActionsText
+    {
+        get
+        {
+            if (Door is null) return "";
+            if (!Door.IsLocked) return "Open";
+
+            var actions = new List<string>();
+
+            if (HoldingKeys && (Zone?.IsOwned == true || Zone?.IsGovernment == true))
+                actions.Add("Keys");
+
+            if (Door.IsLockpickable)
+                actions.Add("Lockpick");
+
+            if (Door.IsRamBreakable)
+                actions.Add("Battering Ram");
+
+            return actions.Count > 0
+                ? string.Join(" / ", actions)
+                : "No available actions";
+        }
+    }
+
+    
+    protected override int BuildHash()
+    {
+        var p = Door is null ? 0 : (int)(Door.LockpickProgress01 * 100f);
+
+
+        var h1 = HashCode.Combine(
+            Visible,
+            Door?.IsLocked,
+            Door?.IsBeingLockpicked,
+            Door?.LockpickProgress01,
+            Zone?.IsGovernment,
+            Zone?.IsOwned,
+            ActiveSlot,
+            OwnerText            
+        );
+
+        return HashCode.Combine(h1, p, AvailableActionsText, PropertyText, StatusText);
+    }
+
+    
+}

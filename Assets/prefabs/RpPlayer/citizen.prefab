@@ -277,6 +277,18 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null
+      },
+      {
+        "__type": "UnboxedLife.EquipComponent",
+        "__guid": "54577b23-cdd6-4b18-8795-9af90a15e355",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [
@@ -346,7 +358,7 @@
         ],
         "Children": [
           {
-            "__guid": "28ed9746-b25e-498f-9672-b4525fb8f942",
+            "__guid": "8f7524fe-82e2-47f9-be32-a83c89060c1a",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - baseball_cap_blue_white",
@@ -363,7 +375,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "9d113139-3e76-4f3f-a0d9-450daf7c2e96",
+                "__guid": "cb43b62c-e719-4104-a0ed-fb169e039872",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -415,7 +427,7 @@
             "Children": []
           },
           {
-            "__guid": "594a3fe9-273f-4297-920a-dc7b03994e32",
+            "__guid": "b63e44bc-f4d6-4947-bba7-898c86fa81f9",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - brown_cargo_pants",
@@ -432,7 +444,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "6dfb227d-719e-4fd8-a67c-0f3bc0f4a9ca",
+                "__guid": "fbc3cd4f-3914-4aed-8e71-7493b75a71bf",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -484,7 +496,7 @@
             "Children": []
           },
           {
-            "__guid": "bead936e-8dc0-491c-b85e-0c2b1eebea69",
+            "__guid": "eccb3fa0-a823-4643-b09e-b70d476a75d8",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - boxing_boots",
@@ -501,7 +513,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2f9cbd7a-a250-4eb9-ab87-e4bc970d5b12",
+                "__guid": "8eb30553-9d32-46a3-bf95-d33ed059e548",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -553,7 +565,7 @@
             "Children": []
           },
           {
-            "__guid": "98201cec-1e46-47d8-aa92-83fa190882c0",
+            "__guid": "372fd2e1-9184-4694-b149-ae840b535f91",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - tactical_vest_army",
@@ -570,7 +582,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "fcd0265d-483f-470d-acac-580077709089",
+                "__guid": "a100f6ef-a778-4022-823d-bf04cf1c9a5d",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

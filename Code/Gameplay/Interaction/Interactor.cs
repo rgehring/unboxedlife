@@ -1,4 +1,7 @@
-﻿namespace UnboxedLife;
+﻿using System;
+using System.Linq;
+
+namespace UnboxedLife;
 
 public sealed class Interactor : Component
 {
@@ -13,6 +16,8 @@ public sealed class Interactor : Component
 	private GameObject _lastHoveredGo;
 	private bool _hasAccessCached = true;
 	private string _accessReasonCached = null;
+	public Door HoverDoor { get; private set; }
+	public PropertyZone HoverZone { get; private set; }
 
 	public string HoverPrompt
 	{
@@ -28,6 +33,16 @@ public sealed class Interactor : Component
 		}
 	}
 
+	public string HoverReason
+	{
+		get
+		{
+			if ( _hovered is null ) return null;
+			if ( !_hovered.RequirePropertyAccess ) return null;
+
+			return _hasAccessCached ? null : (_accessReasonCached ?? "No access");
+		}
+	}
 
 	protected override void OnUpdate()
 	{
@@ -45,9 +60,28 @@ public sealed class Interactor : Component
 			TraceDistance
 		);
 
-		_hovered = tr.Hit
-			? tr.GameObject?.Components.Get<Interactable>( FindMode.InSelf | FindMode.InAncestors )
-			: null;
+		_hovered = null;
+		HoverDoor = null;
+		HoverZone = null;
+
+		if ( tr.Hit && tr.GameObject is not null )
+		{
+			// 1) Always populate door/zone info from what you're looking at
+			var door = tr.GameObject.Components.Get<Door>( FindMode.InSelf | FindMode.InAncestors );
+			if ( door is not null )
+			{
+				HoverDoor = door;
+
+				var pos = (door.DoorPivot?.IsValid() ?? false)
+					? door.DoorPivot.WorldPosition
+					: door.WorldPosition;
+
+				HoverZone = PropertyZoneRegistry.FindZoneAt( pos );
+			}
+
+			// 2) Separately choose the best interactable for the action prompt / Use
+			_hovered = ChooseInteractableForUI( tr.GameObject, pawn );
+		}
 
 		var hoveredGo = _hovered?.GameObject;
 
@@ -84,14 +118,24 @@ public sealed class Interactor : Component
 
 		var owner = GameObject.Network?.Owner;
 		if ( owner is null || Rpc.Caller != owner )
+		{
+			Log.Info( $"[Interactor][HOST] RequestUse denied: caller mismatch. caller={Rpc.Caller?.DisplayName} owner={owner?.DisplayName}" );
 			return;
-
+		}
 		//<summary> If you later decide you want some interactables to be server-only, non-networked (possible), then you can remove the target.Network is null guard or make it conditional. For now, given your PvP/security goals, requiring networked targets is reasonable.</summary>
 		if ( target is null || !target.IsValid )
+		{
+			Log.Info( $"[Interactor][HOST] RequestUse denied: invalid target" );
 			return;
-
+		}
 		if ( target.Network is null )
+		{
+			Log.Info( $"[Interactor][HOST] RequestUse denied: target not networked target={target.Name}" );
 			return;
+		}
+
+		Log.Info( $"[Interactor][HOST] RequestUse received: caller={Rpc.Caller.DisplayName} target={target.Name}" );
+
 
 		var pawn = Scene.GetAllObjects( true )
 			.FirstOrDefault( go =>
@@ -99,13 +143,50 @@ public sealed class Interactor : Component
 				go.Components.Get<Sandbox.PlayerController>() is not null );
 
 		if ( pawn is null )
+		{
+			Log.Info( $"[Interactor][HOST] RequestUse denied: no pawn for caller={Rpc.Caller.DisplayName}" );
 			return;
+		}
+		var interactables = target.Components.GetAll<Interactable>( FindMode.InSelf | FindMode.InAncestors )
+			.ToList();
 
-		var interactable = target.Components.Get<Interactable>( FindMode.InSelf | FindMode.InAncestors );
-		if ( interactable is null )
+		if ( !interactables.Any() )
+		{
+			Log.Info( $"[Interactor][HOST] RequestUse denied: no Interactable on target={target.Name}" );
 			return;
+		}
 
-		interactable.InteractHost( pawn );
+		Log.Info( $"[Interactor][HOST] Interactables on target={target.Name} count={interactables.Count} :: " +
+			string.Join( ", ", interactables.Select( i => $"{i.GetType().Name}:{i.Action}" ) ) );
+
+		Interactable chosen = null;
+
+		foreach ( var i in interactables )
+		{
+			bool ok = false;
+			try { ok = i.CanInteract( pawn ); }
+			catch ( Exception e )
+			{
+				Log.Info( $"[Interactor][HOST] CanInteract exception on {i.GetType().Name}:{i.Action} :: {e.Message}" );
+			}
+
+			Log.Info( $"[Interactor][HOST] CanInteract {i.GetType().Name}:{i.Action} -> {ok}" );
+
+			if ( ok )
+			{
+				chosen = i;
+				break;
+			}
+		}
+
+		if ( chosen is null )
+		{
+			Log.Info( $"[Interactor][HOST] RequestUse denied: no interactable allowed interaction on target={target.Name}" );
+			return;
+		}
+
+		Log.Info( $"[Interactor][HOST] Chosen interactable: {chosen.GetType().Name}:{chosen.Action}" );
+		chosen.InteractHost( pawn );
 	}
 
 
@@ -119,7 +200,12 @@ public sealed class Interactor : Component
 
 		if ( target is null || !target.IsValid ) return;
 
-		var interactable = target.Components.Get<Interactable>( FindMode.InSelf | FindMode.InAncestors );
+		var pawn = Scene.GetAllObjects( true )
+			.FirstOrDefault( go =>
+				go.Network?.Owner == owner &&
+				go.Components.Get<Sandbox.PlayerController>() is not null );
+
+		var interactable = (pawn is null) ? null : ChooseInteractableForUI( target, pawn );
 		if ( interactable is null ) return;
 
 		// Determine zone/access for UI only (do NOT rely on this for enforcement)
@@ -155,5 +241,34 @@ public sealed class Interactor : Component
 			_accessReasonCached = reason;
 		}
 	}
+
+	private static int GetPriority( Interactable i, GameObject interactor )
+	{
+		// Higher wins.
+		if ( i is DoorInteractable di )
+		{
+			var equip = interactor?.Components.Get<EquipComponent>();
+
+			if ( di.Action == PropertyAction.LockpickDoor && equip?.ActiveSlot == EquipComponent.Slot.Lockpick )
+				return 100;
+
+			if ( di.Action == PropertyAction.OpenDoor )
+				return 10;
+		}
+
+		return 0;
+	}
+
+	private static Interactable ChooseInteractableForUI( GameObject target, GameObject interactor )
+	{
+		var list = target.Components.GetAll<Interactable>( FindMode.InSelf | FindMode.InAncestors ).ToList();
+		if ( list.Count == 0 ) return null;
+
+		return list
+			.Where( x => x is not null && x.CanPreview( interactor ) )
+			.OrderByDescending( x => GetPriority( x, interactor ) )
+			.FirstOrDefault();
+	}
+
 
 }

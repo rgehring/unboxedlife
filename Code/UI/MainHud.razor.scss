@@ -9,6 +9,56 @@
 	pointer-events: none;
 }
 
+.door-inspect {
+	position: absolute;
+	left: 50%;
+	top: 60%;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 6px 8px;
+	border-radius: 6px;
+	background-color: rgba(0,0,0,0.6);
+	color: white;
+	font-family: sans-serif;
+	font-size: 14px;
+	pointer-events: none;
+}
+
+	.door-inspect.hide {
+		display: none;
+	}
+
+	.door-inspect .row {
+		display: flex;
+		gap: 6px;
+	}
+
+	.door-inspect .label {
+		opacity: 0.8;
+	}
+
+	.door-inspect .value {
+		font-weight: 600;
+	}
+
+	.door-inspect .lockpick-bar {
+		margin-top: 6px;
+		width: 220px;
+		height: 6px;
+		background-color: rgb(255, 0, 0);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.door-inspect .lockpick-bar .fill {
+		height: 100%;
+		background: linear-gradient( to right, 
+									rgb(220, 89, 60), 
+									rgb(220, 200, 60), 
+									rgb(0, 255, 33) );
+	}
+
 // keep your existing .status / .vitals / etc styles below
 
 

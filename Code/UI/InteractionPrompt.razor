@@ -1,7 +1,9 @@
-@namespace UnboxedLife
 @using Sandbox
 @using Sandbox.UI
+@using System
+@using System.Linq
 @inherits Panel
+@namespace UnboxedLife
 
 
 <root class="interaction-prompt @(Visible ? "show" : "hide")">
@@ -24,7 +26,8 @@
     private string Text => LocalInteractor?.HoverPrompt ?? "";
     
     // Optional (only if you want to show access denied reason later)
-    private string Reason => ""; // wire this if you expose cached reason from Interactor
+    private string Reason => LocalInteractor?.HoverReason ?? "";
+    // wire this if you expose cached reason from Interactor
 
     protected override int BuildHash()
     {

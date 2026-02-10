@@ -240,6 +240,8 @@ public sealed class UbxNetwork : Component, Component.INetworkListener
 
 		if ( oldPawn is not null && oldPawn.IsValid() )
 		{
+
+
 			Log.Info( $"[Respawn] destroying pawn id={oldPawn.Id} name={oldPawn.Name} owner={oldPawn.Network?.OwnerId}" );
 			oldPawn.Destroy();
 		}
