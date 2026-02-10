@@ -122,7 +122,7 @@ public sealed class Interactor : Component
 			Log.Info( $"[Interactor][HOST] RequestUse denied: caller mismatch. caller={Rpc.Caller?.DisplayName} owner={owner?.DisplayName}" );
 			return;
 		}
-		//<summary> If you later decide you want some interactables to be server-only, non-networked (possible), then you can remove the target.Network is null guard or make it conditional. For now, given your PvP/security goals, requiring networked targets is reasonable.</summary>
+		//<summary> If later decide you want some interactables to be server-only, non-networked (possible), then you can remove the target.Network is null guard or make it conditional. For now, given your PvP/security goals, requiring networked targets is reasonable.</summary>
 		if ( target is null || !target.IsValid )
 		{
 			Log.Info( $"[Interactor][HOST] RequestUse denied: invalid target" );
