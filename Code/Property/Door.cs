@@ -6,7 +6,7 @@ public enum DoorSecurityLevel
 {
 	Basic = 1,        // lockpick, ram
 	Reinforced = 2,   // advanced lockpick, ram
-	Secure = 3        // explosives / keycard
+	Secure = 3        // explosives / keycard / keypad
 }
 
 

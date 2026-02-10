@@ -330,7 +330,7 @@
         ],
         "Children": [
           {
-            "__guid": "09038f56-aff5-4028-b260-294afeb24bd3",
+            "__guid": "9e15de67-58ca-4ae1-b6b3-0809deaffd3a",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - police_hat",
@@ -347,7 +347,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "f33cfdab-4fcc-4459-b674-ec64548e59c8",
+                "__guid": "1421f7e5-5285-4bb6-80fb-54b7fc93274b",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -399,7 +399,7 @@
             "Children": []
           },
           {
-            "__guid": "7b41ae0c-6b81-484c-8c34-33a80a253225",
+            "__guid": "ba4135b3-6769-49ef-a617-3c0657d498e1",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - tactical_vest",
@@ -416,7 +416,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "b0b40999-901e-4cff-8716-2af7157ec609",
+                "__guid": "831caefb-337f-43d1-9469-2b50ac7ef756",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
